@@ -1,6 +1,6 @@
 @use 'variables';
 
-.container {
+.icon-container {
   // DISPLAY:
   display: inline-flex;
   flex-direction: column;
@@ -8,12 +8,11 @@
   border-radius: variables.$desktop-radius;
 
   // SPACE:
-  padding: variables.$desktop-padding;
-  gap: variables.$desktop-gap;
+  padding: variables.$desktop-spacing-medium;
+  gap: variables.$desktop-spacing-small;
 
   // COLOR:
-  box-shadow: variables.$drop-bow-shadow, variables.$desktop-inner-outline;
-  background: variables.$gradient-1-highlighted;
+  box-shadow: variables.$drop-box-shadow, variables.$desktop-inner-outline;
 }
 
 img {
@@ -46,12 +45,4 @@ img {
   font-size: 11px;
   line-height: 16px;
   text-align: center;
-
-  // COLOR:
-  background: variables.$gradient-1-highlighted;
-  // Black magic to get the gradient as text color.
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
 }

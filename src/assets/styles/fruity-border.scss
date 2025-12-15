@@ -1,0 +1,34 @@
+@use 'variables';
+
+.fruity-border {
+  width: fit-content;
+
+  position: relative;
+  border-radius: variables.$desktop-spacing-big + 1px;
+
+  //WEIRD BORDER:
+  margin: 3px;
+  outline: 3px white solid;
+  outline-offset: 3px;
+
+  box-shadow: variables.$drop-box-shadow;
+}
+
+.fruity-border::before {
+  content: '';
+  position: absolute;
+
+  // WIDTH:
+  inset: -3px;
+  padding: 3px;
+
+  // STYLE:
+  border-radius: variables.$desktop-spacing-big + 4px;
+  background: variables.$gradient-1-highlighted;
+
+  // BLACK MAGIC (masks):
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}

@@ -3,7 +3,7 @@
 // FONTS:
 @font-face {
   font-family: 'MPLUSRounded1c';
-  src: url('src/assets/fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Medium.ttf') format('truetype');
+  src: url('@/assets/fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Medium.ttf') format('truetype');
 }
 
 // COLORS:
@@ -16,19 +16,22 @@ $gradient-1-simple: radial-gradient(
   $gradient-color-1 100%
 );
 
-$inner-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) inset;
-$drop-bow-shadow: 0px 10px 10px -3px rgba(0, 0, 0, 0.25);
+$simple-highlight: radial-gradient(66% 38.11% at 50% 0%, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
 
-$gradient-1-highlighted:
-  radial-gradient(66% 38.11% at 50% 0%, #ffffff 0%, rgba(255, 255, 255, 0) 100%), $gradient-1-simple;
+$gradient-1-highlighted: $simple-highlight, $gradient-1-simple;
+
+$inner-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) inset;
+$drop-box-shadow: 0px 10px 10px -3px rgba(0, 0, 0, 0.25);
+$inner-gloss: inset 0px -50px 50px #ffffff;
 
 // DESKTOP:
 $desktop-image-size: 60px;
 
-$desktop-margin: 5px;
-$desktop-padding: 10px;
-$desktop-gap: 5px;
+$desktop-spacing-small: 5px;
+$desktop-spacing-medium: 10px;
+$desktop-spacing-big: 15px;
 
 $desktop-radius: 15px;
 
 $desktop-inner-outline: 0px 0px 0px 3px white inset;
+$desktop-border: 3px solid white;

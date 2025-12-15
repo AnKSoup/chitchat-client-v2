@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import icon from '@/components/icon-item.vue'
+import iconList from '@/components/icon-list.vue'
 </script>
 
 <template>
@@ -8,9 +8,24 @@ import icon from '@/components/icon-item.vue'
     Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
     documentation
   </p>
+  <icon-list
+    :icons-array="[
+      { iconImg: 'chat', iconText: 'Chat' },
+      { iconImg: 'blog', iconText: 'Blog' },
+    ]"
+  />
 
-  <icon icon-name="chat" icon-text="Chat" />
-  <icon icon-name="blog" icon-text="Blog" />
+  <!-- <icon-list
+    :icons-object="{
+      '+ Conv.': 'create_conversation',
+      '- User': 'remove_user',
+      '+ User': 'add_user',
+    }"
+  /> -->
 </template>
 
-<style scoped></style>
+<style>
+html {
+  background-color: rgb(156, 156, 156);
+}
+</style>
