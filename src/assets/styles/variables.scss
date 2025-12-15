@@ -1,0 +1,34 @@
+// This is to store all the variables needed:
+
+// FONTS:
+@font-face {
+  font-family: 'MPLUSRounded1c';
+  src: url('src/assets/fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Medium.ttf') format('truetype');
+}
+
+// COLORS:
+$gradient-color-1: #4570ff;
+$gradient-color-2: #35c2ff;
+
+$gradient-1-simple: radial-gradient(
+  100% 100% at 50% 100%,
+  $gradient-color-2 0%,
+  $gradient-color-1 100%
+);
+
+$inner-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) inset;
+$drop-bow-shadow: 0px 10px 10px -3px rgba(0, 0, 0, 0.25);
+
+$gradient-1-highlighted:
+  radial-gradient(66% 38.11% at 50% 0%, #ffffff 0%, rgba(255, 255, 255, 0) 100%), $gradient-1-simple;
+
+// DESKTOP:
+$desktop-image-size: 60px;
+
+$desktop-margin: 5px;
+$desktop-padding: 10px;
+$desktop-gap: 5px;
+
+$desktop-radius: 15px;
+
+$desktop-inner-outline: 0px 0px 0px 3px white inset;

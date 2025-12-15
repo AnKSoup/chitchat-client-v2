@@ -2,10 +2,19 @@
   "name": "chitchat-client",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
-  "engines": {
-    "node": "^20.19.0 || >=22.12.0"
+  "description": "Reworked client for the chitchat api ",
+  "homepage": "https://github.com/AnKSoup/chitchat-client-v2#readme",
+  "bugs": {
+    "url": "https://github.com/AnKSoup/chitchat-client-v2/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnKSoup/chitchat-client-v2.git"
+  },
+  "license": "ISC",
+  "author": "Drouet Killian",
+  "type": "module",
+  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
@@ -31,9 +40,14 @@
     "jiti": "^2.6.1",
     "npm-run-all2": "^8.0.4",
     "prettier": "3.6.2",
+    "sass": "^1.96.0",
+    "sass-loader": "^16.0.6",
     "typescript": "~5.9.0",
     "vite": "^7.2.4",
     "vite-plugin-vue-devtools": "^8.0.5",
     "vue-tsc": "^3.1.5"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
   }
 }

@@ -1,0 +1,57 @@
+@use 'variables';
+
+.container {
+  // DISPLAY:
+  display: inline-flex;
+  flex-direction: column;
+
+  border-radius: variables.$desktop-radius;
+
+  // SPACE:
+  padding: variables.$desktop-padding;
+  gap: variables.$desktop-gap;
+
+  // COLOR:
+  box-shadow: variables.$drop-bow-shadow, variables.$desktop-inner-outline;
+  background: variables.$gradient-1-highlighted;
+}
+
+img {
+  width: variables.$desktop-image-size;
+  height: variables.$desktop-image-size;
+
+  border-radius: variables.$desktop-radius;
+
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.text-container {
+  // DISPLAY:
+  display: flex;
+  justify-content: center;
+
+  border-radius: variables.$desktop-radius;
+  box-shadow: variables.$inner-box-shadow;
+
+  // COLOR:
+  background: white;
+}
+
+.text {
+  // SPACE:
+  margin: 0;
+
+  // FONT:
+  font-family: 'MPLUSRounded1c';
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+
+  // COLOR:
+  background: variables.$gradient-1-highlighted;
+  // Black magic to get the gradient as text color.
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
