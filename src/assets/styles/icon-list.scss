@@ -1,11 +1,11 @@
 @use 'variables';
 
 .list-container {
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
 
   padding: variables.$desktop-spacing-medium;
-  gap: variables.$desktop-spacing-big;
+  justify-content: space-between;
 
   border-radius: variables.$desktop-spacing-big;
 
@@ -13,4 +13,9 @@
   box-shadow: variables.$inner-box-shadow, variables.$inner-gloss;
   border: variables.$desktop-border;
   background-color: rgba(255, 255, 255, 0.5);
+}
+
+.bundle {
+  display: inline-flex;
+  gap: variables.$desktop-spacing-medium;
 }

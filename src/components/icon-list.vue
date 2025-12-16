@@ -7,14 +7,17 @@ defineProps(['iconsArray'])
 <template>
   <div class="fruity-border">
     <div class="list-container">
-      <icon
-        v-for="icon in iconsArray"
-        v-bind:key="icon"
-        :icon-img="icon.iconImg"
-        :icon-text="icon.iconText"
-        :gradient-color1="icon.gradientColor1"
-        :gradient-color2="icon.gradientColor2"
-      />
+      <div class="bundle" v-for="item in iconsArray" v-bind:key="item">
+        <icon
+          v-for="icon in item"
+          v-bind:key="icon"
+          :icon-img="icon.iconImg"
+          :icon-text="icon.iconText"
+          :gradient-color1="icon.gradientColor1"
+          :gradient-color2="icon.gradientColor2"
+          :action="icon.action"
+        />
+      </div>
     </div>
   </div>
 </template>

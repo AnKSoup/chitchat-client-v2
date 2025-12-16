@@ -1,13 +1,13 @@
 @use 'variables';
 
 .fruity-border {
-  width: fit-content;
+  // width: fit-content;
 
   position: relative;
   border-radius: variables.$desktop-spacing-big + 1px;
 
   //WEIRD BORDER:
-  margin: 3px;
+  margin: 6px;
   outline: 3px white solid;
   outline-offset: 3px;
 
@@ -17,6 +17,7 @@
 .fruity-border::before {
   content: '';
   position: absolute;
+  z-index: -1;
 
   // WIDTH:
   inset: -3px;

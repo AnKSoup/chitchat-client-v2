@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 // Get icon data called by the component parent:
-const icon = defineProps(['iconImg', 'iconText', 'gradientColor1', 'gradientColor2'])
+const icon = defineProps(['iconImg', 'iconText', 'gradientColor1', 'gradientColor2', 'action'])
 
 let gradient = ref({
   color1: icon.gradientColor1,
@@ -16,12 +16,23 @@ if (!icon.gradientColor1 || !icon.gradientColor2) {
     color2: '#35c2ff',
   })
 }
-
 const imagePath = 'src/assets/images/' + icon.iconImg + '.svg'
+
+function executeAction() {
+  try {
+    icon.action()
+  } catch (error) {
+    if (!icon.action) {
+      console.log('Please provide an action for this button.')
+    } else if (error instanceof Error) {
+      console.log(error.message)
+    }
+  }
+}
 </script>
 
 <template>
-  <div class="icon-container">
+  <div class="icon-container" @click="executeAction()">
     <img :src="imagePath" :alt="iconImg" />
     <div class="text-container">
       <p class="text">{{ iconText }}</p>
