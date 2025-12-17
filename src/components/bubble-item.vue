@@ -9,6 +9,7 @@ const gradient = ref(generateGradient(bubble.gradientColor1, bubble.gradientColo
 let orientation =
   bubble.orientation != 'left' && bubble.orientation != 'right' ? '' : bubble.orientation
 </script>
+
 <template>
   <div class="bubble-container" :class="orientation">
     <p>{{ text }}</p>

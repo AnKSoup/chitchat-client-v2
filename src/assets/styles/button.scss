@@ -1,0 +1,23 @@
+@use 'variables';
+
+button {
+  font-family: 'MPLUSRounded1c';
+  font-weight: 900;
+  font-size: 24px;
+  padding: variables.$desktop-spacing-medium;
+
+  color: white;
+
+  border: variables.$desktop-border;
+  border-radius: variables.$desktop-radius;
+
+  background: variables.$gradient-1-highlighted;
+  box-shadow: variables.$drop-box-shadow;
+
+  transition: all ease-out 100ms;
+  &:hover {
+    cursor: pointer;
+    transform: translate(0px, -5px);
+    box-shadow: variables.$outer-glow;
+  }
+}
