@@ -1,21 +1,12 @@
 <script setup lang="ts">
+import { generateGradient } from '@/scripts/gradients'
 import { ref } from 'vue'
 
 // Get icon data called by the component parent:
 const icon = defineProps(['iconImg', 'iconText', 'gradientColor1', 'gradientColor2', 'action'])
 
-let gradient = ref({
-  color1: icon.gradientColor1,
-  color2: icon.gradientColor2,
-})
+const gradient = ref(generateGradient(icon.gradientColor1, icon.gradientColor2))
 
-// Defaults to the blue gradient
-if (!icon.gradientColor1 || !icon.gradientColor2) {
-  gradient = ref({
-    color1: '#4570ff',
-    color2: '#35c2ff',
-  })
-}
 const imagePath = 'src/assets/images/' + icon.iconImg + '.svg'
 
 function executeAction() {

@@ -6,6 +6,11 @@
   src: url('@/assets/fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Medium.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'AlbertSans';
+  src: url('@/assets/fonts/Albert_Sans/AlbertSans-VariableFont_wght.ttf') format('truetype');
+}
+
 // COLORS:
 $gradient-color-1: #4570ff;
 $gradient-color-2: #35c2ff;
@@ -37,6 +42,9 @@ $desktop-spacing-big: 15px;
 $desktop-spacing-huge: 20px;
 
 $desktop-radius: 15px;
+$desktop-bubble-radius: 20px;
 
 $desktop-inner-outline: 0px 0px 0px 3px white inset;
-$desktop-border: 3px solid white;
+
+$desktop-border-width: 3px;
+$desktop-border: $desktop-border-width solid white;

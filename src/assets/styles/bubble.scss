@@ -1,0 +1,35 @@
+@use 'variables';
+
+.bubble-container {
+  display: inline-flex;
+  width: fit-content;
+
+  // Insets the border
+  padding: variables.$desktop-spacing-medium - variables.$desktop-border-width;
+
+  border: variables.$desktop-border;
+  border-radius: calc(variables.$desktop-radius * 2);
+
+  box-shadow: variables.$drop-box-shadow;
+}
+
+p {
+  font-family: 'AlbertSans';
+  text-align: justify;
+
+  margin: 0;
+  padding: variables.$desktop-spacing-medium;
+
+  border-radius: variables.$desktop-bubble-radius;
+
+  box-shadow: variables.$inner-box-shadow;
+  background-color: white;
+  color: #696969;
+}
+
+.left {
+  border-bottom-left-radius: 0;
+}
+.right {
+  border-bottom-right-radius: 0;
+}
