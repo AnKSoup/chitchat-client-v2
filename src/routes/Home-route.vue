@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import buttonItem from '@/components/button-item.vue'
-import profilePictureItem from '@/components/profile-picture-item.vue'
+// import profilePictureItem from '@/components/profile-picture-item.vue'
 import writingBar from '@/components/writing-bar.vue'
 </script>
 <template>
@@ -15,18 +14,8 @@ import writingBar from '@/components/writing-bar.vue'
 
   <div>test components</div>
 
-  <button>TEST</button>
-
-  <ul>
-    <li>
-      <profile-picture-item />
-    </li>
-    <li>
-      <writing-bar />
-    </li>
-  </ul>
+  <!-- <profile-picture-item /> -->
+  <writing-bar placeholder="Helooo.." />
 </template>
 
-<style lang="scss">
-@use '@/assets/styles/button.scss';
-</style>
+<style lang="scss"></style>

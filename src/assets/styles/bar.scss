@@ -1,0 +1,42 @@
+@use 'variables';
+
+.bar-container {
+  display: flex;
+  align-items: end;
+  gap: variables.$desktop-spacing-medium;
+  div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    // Insets the border
+    padding: variables.$desktop-spacing-medium - variables.$desktop-border-width;
+
+    border: variables.$desktop-border;
+    border-radius: variables.$desktop-radius;
+
+    box-shadow: variables.$drop-box-shadow;
+  }
+}
+
+textarea {
+  width: 100%;
+
+  font-family: 'AlbertSans';
+  font-size: variables.$desktop-font-medium;
+
+  margin: 0;
+  //Needs the offset or else it looks weird ??
+  padding-top: 3px;
+  padding-inline: variables.$desktop-spacing-medium;
+
+  resize: none;
+
+  outline: none;
+  border: none;
+  border-radius: variables.$desktop-radius;
+
+  box-shadow: variables.$inner-box-shadow;
+  background-color: white;
+  color: #696969;
+}
