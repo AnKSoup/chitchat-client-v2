@@ -1,6 +1,5 @@
 <script setup lang="ts">
-// import profilePictureItem from '@/components/profile-picture-item.vue'
-import textBar from '@/components/text-bar.vue'
+import profilePictureItem from '@/components/profile-picture-item.vue'
 </script>
 <template>
   <h1>THIS IS THE UNFINISHED HOME PAGE</h1>
@@ -14,12 +13,14 @@ import textBar from '@/components/text-bar.vue'
 
   <div>test components</div>
 
-  <!-- <profile-picture-item /> -->
-  <text-bar
-    text="Test"
-    image="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fc2.staticflickr.com%2F8%2F7067%2F6865167147_d35145533f_b.jpg"
+  <profile-picture-item
+    image="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%2Fid%2FOIP.8iw4doylAbh8GIV9FIrJEgHaE6%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=c0731549e233badcb371e1b93da142c8dd934aefabb04cdcc6632c3f5807f552&ipo=images"
   />
-  <text-bar text="Test" />
+  <profile-picture-item
+    image="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2F736x%2Ff0%2F0c%2Fe8%2Ff00ce841a9c1175376f60ed115183718.jpg&f=1&nofb=1&ipt=1ab1c54f3ea41031c923341b39b055e47f308534ba51aaaafc65de7e0754f8a6"
+    gradient-color1="red"
+  />
+  <profile-picture-item />
 </template>
 
 <style lang="scss"></style>

@@ -30,7 +30,7 @@ $simple-highlight: radial-gradient(66% 38.11% at 50% 0%, #ffffff 0%, rgba(255, 2
 
 $gradient-1-highlighted: $simple-highlight, $gradient-1-simple;
 
-$inner-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25) inset;
+$inner-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5) inset;
 $drop-box-shadow: 0px 10px 10px -3px rgba(0, 0, 0, 0.25);
 $inner-gloss: inset 0px -50px 50px white;
 $outer-glow: 0px 0px 30px 3px white;
@@ -49,6 +49,8 @@ $desktop-spacing-huge: 20px;
 $desktop-font-small: 11px;
 $desktop-font-medium: 20px;
 $desktop-font-big: 24px;
+
+$desktop-pfp-size: 48px;
 
 $desktop-radius: 15px;
 $desktop-bubble-radius: 20px;

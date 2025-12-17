@@ -1,0 +1,28 @@
+@use 'variables';
+
+.image-container {
+  display: inline-flex;
+
+  padding: variables.$desktop-spacing-medium - variables.$desktop-border-width;
+
+  border: variables.$desktop-border;
+  border-radius: variables.$desktop-radius;
+
+  box-shadow: variables.$drop-box-shadow;
+}
+
+.image {
+  width: variables.$desktop-pfp-size;
+  height: variables.$desktop-pfp-size;
+
+  border-radius: variables.$desktop-radius;
+  box-shadow: variables.$inner-box-shadow;
+
+  background-size: cover;
+  background-position: center;
+
+  background-color: #d9d9d9;
+
+  border: variables.$desktop-border;
+  border-width: variables.$desktop-border-width - 1;
+}
