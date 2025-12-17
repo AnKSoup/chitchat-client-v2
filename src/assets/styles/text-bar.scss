@@ -1,0 +1,51 @@
+@use 'variables';
+
+.text-bar {
+  display: inline-flex;
+  align-items: center;
+
+  // Insets the border
+  padding: variables.$desktop-spacing-medium - variables.$desktop-border-width;
+
+  border: variables.$desktop-border;
+  border-radius: variables.$desktop-radius;
+
+  box-shadow: variables.$drop-box-shadow;
+
+  div {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+
+    border-radius: variables.$desktop-radius;
+
+    // WHITE!!
+    box-shadow:
+      variables.$inner-box-shadow,
+      inset 100vw 0px rgba(255, 255, 255, 0.5);
+
+    background-size: cover;
+    background-position: center;
+    background-color: white;
+  }
+}
+
+P {
+  font-size: variables.$desktop-font-medium;
+
+  margin: 0;
+  //Needs the offset or else it looks weird ??
+  padding-inline: variables.$desktop-spacing-medium;
+}
+
+// Needed because of clipping background for gradient on text
+.no-text-outline {
+  font-family: 'MPLUSRounded1c';
+  font-weight: 900;
+}
+.text-outline {
+  font-family: 'MPLUSRounded1cOUTLINE';
+  font-size: variables.$desktop-font-medium + 1;
+  -webkit-text-stroke: 1px white;
+}

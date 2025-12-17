@@ -17,9 +17,9 @@ const { textarea, input } = useTextareaAutosize()
     <button>SEND</button>
   </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 @use '@/assets/styles/button.scss';
-@use '@/assets/styles/bar.scss';
+@use '@/assets/styles/writing-bar.scss';
 @use '@/assets/styles/variables.scss';
 
 // OVERRIDE:
