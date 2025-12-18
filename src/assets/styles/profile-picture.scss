@@ -12,8 +12,8 @@
 }
 
 .image {
-  width: variables.$desktop-pfp-size;
-  height: variables.$desktop-pfp-size;
+  width: variables.$desktop-pfp-size - variables.$desktop-border-width - 1;
+  height: variables.$desktop-pfp-size - variables.$desktop-border-width - 1;
 
   border-radius: variables.$desktop-radius;
   box-shadow: variables.$inner-box-shadow;

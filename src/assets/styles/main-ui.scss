@@ -2,7 +2,7 @@
 @use 'variables';
 
 .ui-container {
-  height: calc(100% - variables.$desktop-spacing-huge * 2);
+  height: calc(100vh - variables.$desktop-spacing-huge * 2);
   display: flex;
   flex-direction: column;
   gap: variables.$desktop-spacing-huge;
@@ -22,12 +22,8 @@ nav {
 
 main {
   width: 100%;
-  height: 100%;
+  // height: needs to be calculated from a script because hidden elements will mess this up
 
   display: flex;
   gap: variables.$desktop-spacing-huge;
-
-  div {
-    flex-grow: 1;
-  }
 }
