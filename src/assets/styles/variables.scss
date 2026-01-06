@@ -44,6 +44,14 @@ $fade-bottom: linear-gradient(
   rgba(0, 0, 0, 0) 100%
 );
 
+$fade-bottom-sharper: linear-gradient(
+  to bottom,
+  rgba(0, 0, 0, 0) 0%,
+  rgba(0, 0, 0, 1) 5%,
+  rgba(0, 0, 0, 1) 95%,
+  rgba(0, 0, 0, 0) 100%
+);
+
 // DESKTOP:
 $desktop-image-size: 60px;
 
@@ -57,6 +65,7 @@ $desktop-font-medium: 20px;
 $desktop-font-big: 24px;
 
 $desktop-pfp-size: 48px;
+// $desktop-min-button-height: 68px;
 
 $desktop-radius: 15px;
 $desktop-bubble-radius: 20px;

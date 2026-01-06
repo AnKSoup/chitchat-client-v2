@@ -23,6 +23,8 @@ nav {
 main {
   width: 100%;
   // height: needs to be calculated from a script because hidden elements will mess this up
+  // Or this..
+  height: calc(100vh - variables.$desktop-spacing-huge * 3 - variables.$desktop-image-size - variables.$desktop-spacing-small - variables.$desktop-spacing-medium *5 - variables.$desktop-font-small - variables.$desktop-border-width * 4);
 
   display: flex;
   gap: variables.$desktop-spacing-huge;

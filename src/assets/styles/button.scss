@@ -6,6 +6,7 @@ button {
   font-size: variables.$desktop-font-big;
 
   height: fit-content;
+  // min-height: variables.$desktop-min-button-height;
   padding: variables.$desktop-spacing-medium;
 
   color: white;

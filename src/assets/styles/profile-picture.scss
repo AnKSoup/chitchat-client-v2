@@ -2,6 +2,7 @@
 
 .image-container {
   display: inline-flex;
+  height: fit-content;
 
   padding: variables.$desktop-spacing-medium - variables.$desktop-border-width;
 

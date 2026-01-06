@@ -5,7 +5,7 @@ import { ref } from 'vue'
 
 const bar = defineProps(['placeholder', 'gradientColor1', 'gradientColor2'])
 const gradient = ref(generateGradient(bar.gradientColor1, bar.gradientColor2))
-let placeholder = bar.placeholder ? bar.placeholder : '...'
+const placeholder = bar.placeholder ? bar.placeholder : '...'
 
 const { textarea, input } = useTextareaAutosize()
 </script>

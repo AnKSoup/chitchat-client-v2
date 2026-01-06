@@ -6,7 +6,7 @@ const bubble = defineProps(['text', 'orientation', 'gradientColor1', 'gradientCo
 const gradient = ref(generateGradient(bubble.gradientColor1, bubble.gradientColor2))
 
 //Initialize the orientation given to the bubble
-let orientation =
+const orientation =
   bubble.orientation != 'left' && bubble.orientation != 'right' ? '' : bubble.orientation
 </script>
 

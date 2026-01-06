@@ -1,0 +1,16 @@
+@use 'variables';
+
+.message-list-container {
+  display: flex;
+  flex-direction: column;
+
+  padding-inline: variables.$desktop-spacing-medium;
+  padding-bottom: variables.$desktop-spacing-medium;
+
+  border-radius: variables.$desktop-radius - 3px;
+
+  gap: variables.$desktop-spacing-medium;
+  overflow-y: auto;
+
+  mask: variables.$fade-bottom-sharper;
+}
