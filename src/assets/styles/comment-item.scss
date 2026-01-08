@@ -1,0 +1,46 @@
+@use 'variables';
+
+.horizontal {
+  display: flex;
+  gap: variables.$desktop-spacing-small;
+}
+
+.vertical {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$desktop-spacing-small;
+  justify-content: space-between;
+}
+
+.username,
+.username-preview {
+  margin: 0;
+  font-size: variables.$desktop-font-medium;
+  font-family: 'MPLUSRounded1c';
+}
+
+.username-preview {
+  font-size: variables.$desktop-font-medium - 5;
+}
+
+.preview {
+  width: 100%;
+  padding: variables.$desktop-spacing-small;
+
+  border: variables.$desktop-border;
+  border-width: variables.$desktop-border-width - 1;
+  border-radius: variables.$desktop-radius;
+
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: variables.$drop-box-shadow variables.$inner-box-shadow;
+}
+
+.date,
+.response-preview {
+  font-family: 'AlbertSans';
+  font-weight: light;
+  font-size: variables.$desktop-font-small;
+  color: #919191;
+  margin: 0;
+  padding: 0;
+}

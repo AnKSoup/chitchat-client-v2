@@ -1,0 +1,26 @@
+@use 'variables';
+
+.blog {
+  width: 100%;
+
+  border: variables.$desktop-border;
+  border-radius: variables.$desktop-radius;
+
+  box-shadow: variables.$inner-box-shadow, variables.$drop-box-shadow;
+  background-color: white;
+  flex: 3 0 0;
+}
+.comments {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: variables.$desktop-spacing-big;
+  min-width: variables.$desktop-font-medium * 20;
+  width: fit-content;
+  flex: 1 1 0;
+}
+
+.author {
+  display: flex;
+  gap: variables.$desktop-spacing-medium;
+}

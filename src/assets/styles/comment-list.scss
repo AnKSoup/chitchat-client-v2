@@ -1,0 +1,17 @@
+@use 'variables';
+
+.comment-cluster-container {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$desktop-spacing-medium;
+  padding-top: variables.$desktop-spacing-medium;
+  padding-bottom: variables.$desktop-spacing-medium;
+  padding-right: variables.$desktop-spacing-medium;
+  border-radius: variables.$desktop-radius;
+
+  box-shadow: variables.$drop-box-shadow variables.$inner-box-shadow;
+
+  overflow-y: auto;
+
+  mask: variables.$fade-bottom-sharper;
+}
