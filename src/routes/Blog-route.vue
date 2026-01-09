@@ -3,12 +3,10 @@ import {
   blogIcon,
   blogSettingsIcon,
   chatIcon,
-  loginIcon,
   logoutIcon,
   profileIcon,
   respondIcon,
   searchIcon,
-  signinIcon,
 } from '@/assets/objects/icons'
 import CommentList from '@/components/comment-list.vue'
 import iconList from '@/components/icon-list.vue'
@@ -104,12 +102,7 @@ const example = `<p style="color:red">I am some raw html</p>
     <!-- TOP hEADER -->
     <nav>
       <icon-list :icons-array="[[profileIcon, chatIcon, blogIcon]]" />
-      <icon-list
-        :icons-array="[
-          [searchIcon, blogSettingsIcon, respondIcon],
-          [signinIcon, loginIcon, logoutIcon],
-        ]"
-      />
+      <icon-list :icons-array="[[searchIcon, blogSettingsIcon, respondIcon], [logoutIcon]]" />
     </nav>
     <main>
       <iframe class="blog" :srcdoc="example" sandbox="" frameborder="0"></iframe>

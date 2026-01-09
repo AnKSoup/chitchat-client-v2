@@ -3,6 +3,7 @@
 
 // Works only here for some reasons, isolating it in another script cause initialization errors because it is called before getting initialized???
 import router from '@/router'
+import { GetCurrentUser, LogOutUser } from '@/scripts/users'
 
 export const profileIcon = {
   iconImg: 'user',
@@ -39,6 +40,9 @@ export const loginIcon = {
   iconText: 'Log In',
   gradientColor1: '',
   gradientColor2: '',
+  action: () => {
+    router.push('Login')
+  },
 }
 
 export const logoutIcon = {
@@ -46,6 +50,10 @@ export const logoutIcon = {
   iconText: 'Log Out',
   gradientColor1: '',
   gradientColor2: '',
+  action: () => {
+    const current_user = GetCurrentUser()
+    LogOutUser(current_user.user_token)
+  },
 }
 
 export const signinIcon = {
@@ -53,6 +61,9 @@ export const signinIcon = {
   iconText: 'Sign In',
   gradientColor1: '',
   gradientColor2: '',
+  action: () => {
+    router.push('Signin')
+  },
 }
 
 export const createConvIcon = {

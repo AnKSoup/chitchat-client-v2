@@ -5,13 +5,11 @@ import {
   chatIcon,
   convSettingsIcon,
   createConvIcon,
-  loginIcon,
   logoutIcon,
   profileIcon,
   remUserIcon,
   respondIcon,
   searchIcon,
-  signinIcon,
 } from '@/assets/objects/icons'
 import iconList from '@/components/icon-list.vue'
 
@@ -162,7 +160,7 @@ const messageList = [
       <icon-list
         :icons-array="[
           [searchIcon, createConvIcon, convSettingsIcon, addUserIcon, remUserIcon, respondIcon],
-          [signinIcon, loginIcon, logoutIcon],
+          [logoutIcon],
         ]"
       />
     </nav>
