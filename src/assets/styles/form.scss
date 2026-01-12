@@ -1,0 +1,77 @@
+@use 'variables';
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10vh;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$desktop-spacing-big;
+  padding: variables.$desktop-spacing-big * 2;
+
+  border: variables.$desktop-border;
+  border-radius: variables.$desktop-radius;
+
+  box-shadow: variables.$inner-gloss, variables.$drop-box-shadow;
+  background-color: rgba(255, 255, 255, 0.25);
+
+  height: fit-content;
+  min-width: fit-content;
+  width: 25vw;
+  div {
+    display: flex;
+    width: 100%;
+    gap: variables.$desktop-spacing-medium;
+    input {
+      flex: 1;
+    }
+  }
+}
+
+.eye {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 40px;
+  color: rgb(100, 100, 100);
+
+  border-radius: variables.$desktop-bubble-radius;
+  border: variables.$desktop-border;
+  box-shadow: variables.$inner-box-shadow, variables.$drop-box-shadow;
+
+  background-color: rgba(255, 255, 255, 0.5);
+
+  transition: all ease-out 100ms;
+  &:hover {
+    cursor: pointer;
+    transform: translate(0px, -5px);
+    box-shadow: variables.$outer-glow;
+  }
+}
+
+input,
+.error {
+  padding-top: variables.$desktop-spacing-medium;
+  padding-bottom: variables.$desktop-spacing-medium;
+  padding-inline: variables.$desktop-spacing-huge;
+
+  border-radius: variables.$desktop-bubble-radius;
+  border: variables.$desktop-border;
+  box-shadow: variables.$inner-box-shadow, variables.$drop-box-shadow;
+
+  background-color: rgba(255, 255, 255, 0.5);
+
+  font-family: 'AlbertSans';
+  font-size: variables.$desktop-font-medium;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  max-width: 50vw;
+}

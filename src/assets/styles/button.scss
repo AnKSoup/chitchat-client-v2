@@ -1,6 +1,7 @@
 @use 'variables';
 
-button {
+button,
+.button {
   font-family: 'MPLUSRounded1c';
   font-weight: 900;
   font-size: variables.$desktop-font-big;

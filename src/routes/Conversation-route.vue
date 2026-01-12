@@ -5,6 +5,7 @@ import {
   chatIcon,
   convSettingsIcon,
   createConvIcon,
+  loginIcon,
   logoutIcon,
   profileIcon,
   remUserIcon,
@@ -158,9 +159,10 @@ const messageList = [
     <nav id="nav">
       <icon-list :icons-array="[[profileIcon, chatIcon, blogIcon]]" />
       <icon-list
+        class="grow"
         :icons-array="[
           [searchIcon, createConvIcon, convSettingsIcon, addUserIcon, remUserIcon, respondIcon],
-          [logoutIcon],
+          [loginIcon, logoutIcon],
         ]"
       />
     </nav>

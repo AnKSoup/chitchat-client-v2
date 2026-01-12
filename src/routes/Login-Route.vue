@@ -1,17 +1,19 @@
 <script setup lang="ts">
+import iconList from '@/components/icon-list.vue'
+import { homeIcon, loginIcon, signinIcon } from '@/assets/objects/icons'
 import { LogInUser } from '@/scripts/users'
 import { reactive, ref } from 'vue'
 
 // quick show/hide function
-const show = ref('show')
+const show = ref('👁')
 const password = ref('password')
 function ShowHidePassword() {
   if (password.value == 'password') {
     password.value = 'text'
-    show.value = 'hide'
+    show.value = '⌣'
   } else {
     password.value = 'password'
-    show.value = 'show'
+    show.value = '👁'
   }
 }
 
@@ -27,19 +29,34 @@ async function submit() {
 }
 </script>
 <template>
-  <p v-if="result" class="error">{{ result.valueOf() }}</p>
-  <form @submit.prevent="submit()">
-    <!-- fields -->
-    <input type="email" v-model="form.user_email" placeholder="user_email" required />
-    <input
-      v-bind:type="password.valueOf()"
-      v-model="form.user_password"
-      placeholder="user_password"
-      required
-    />
-    <button @click.prevent="ShowHidePassword()">{{ show.valueOf() }}</button>
-    <input type="submit" value="Log In" />
-  </form>
+  <div class="ui-container">
+    <nav id="nav">
+      <icon-list class="grow" :icons-array="[[homeIcon], [signinIcon, loginIcon]]" />
+    </nav>
+    <main class="form">
+      <form @submit.prevent="submit()">
+        <!-- fields -->
+        <input type="email" v-model="form.user_email" placeholder="user_email" required />
+        <div>
+          <input
+            v-bind:type="password.valueOf()"
+            v-model="form.user_password"
+            placeholder="user_password"
+            required
+          />
+          <div class="eye" @click="ShowHidePassword()">{{ show.valueOf() }}</div>
+        </div>
+        <input class="button" type="submit" value="Log In" />
+      </form>
+      <p v-if="result" class="error">{{ result.valueOf() }}</p>
+    </main>
+  </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+@use '@/assets/styles/main-ui.scss';
+@use '@/assets/styles/form.scss';
+@use '@/assets/styles/button.scss';
+
+//OVERRIDES:
+</style>

@@ -3,6 +3,7 @@ import {
   blogIcon,
   blogSettingsIcon,
   chatIcon,
+  loginIcon,
   logoutIcon,
   profileIcon,
   respondIcon,
@@ -97,12 +98,18 @@ const example = `<p style="color:red">I am some raw html</p>
 </script>
 
 <template>
-  <!-- TODO: vif if loged in and if owner/ message selected -->
+  <!-- TODO: vif if logged in and if owner/ message selected -->
   <div class="ui-container">
     <!-- TOP hEADER -->
     <nav>
       <icon-list :icons-array="[[profileIcon, chatIcon, blogIcon]]" />
-      <icon-list :icons-array="[[searchIcon, blogSettingsIcon, respondIcon], [logoutIcon]]" />
+      <icon-list
+        class="grow"
+        :icons-array="[
+          [searchIcon, blogSettingsIcon, respondIcon],
+          [loginIcon, logoutIcon],
+        ]"
+      />
     </nav>
     <main>
       <iframe class="blog" :srcdoc="example" sandbox="" frameborder="0"></iframe>

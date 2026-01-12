@@ -5,6 +5,16 @@
 import router from '@/router'
 import { GetCurrentUser, LogOutUser } from '@/scripts/users'
 
+export const homeIcon = {
+  iconImg: 'blog',
+  iconText: 'Home',
+  gradientColor1: '',
+  gradientColor2: '',
+  action: () => {
+    router.push('/')
+  },
+}
+
 export const profileIcon = {
   iconImg: 'user',
   iconText: 'Profile',

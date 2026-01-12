@@ -18,6 +18,7 @@ const router = createRouter({
   ],
 })
 
+//Navigation guard
 router.beforeEach((to) => {
   // canUserAccess() returns `true` or `false`
   const canAccess = CanUserAccess(to.path)
