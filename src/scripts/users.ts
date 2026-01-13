@@ -149,6 +149,22 @@ export async function LogOutUser(user_token: string) {
     CreateLocalObject(current_email as string, UpdateUser(current_user, { user_token: undefined }))
     RemoveCurrentUser()
     router.push('/')
+  } else {
+    alert("Couldn't logout. Please try again.")
   }
-  //Else do something ??
+}
+
+export async function SearchForUser(query: string) {
+  //Returns a list of users like "query"
+  const result = await call('GET', userRoute + '/search/' + query)
+  if (result.success) {
+    //This just sorts it by name
+    const content = result.content
+    content.sort((a: { user_name: string }, b: { user_name: string }) =>
+      a.user_name.localeCompare(b.user_name),
+    )
+    return { content: content }
+  } else {
+    return { error: result.detail }
+  }
 }

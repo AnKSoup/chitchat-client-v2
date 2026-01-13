@@ -2,12 +2,16 @@
 import { stripText } from '@/scripts/text-operations'
 import profilePictureItem from './profile-picture-item.vue'
 import textBar from './text-bar.vue'
-defineProps(['userArray'])
+const props = defineProps(['userArray', 'charLimit'])
+const emit = defineEmits(['selected'])
+
+const limit_of_char = props.charLimit ? props.charLimit : 18
 
 function SelectUser(user: object) {
   if ('user_id' in user) {
-    console.log(user.user_id)
+    emit('selected', user.user_id)
   }
+  //would be better to pass in the id within an emitted event
 }
 </script>
 
@@ -27,7 +31,7 @@ function SelectUser(user: object) {
           :gradient-color2="item.gradientColor2"
         />
         <text-bar
-          :text="stripText(18, item.user_name)"
+          :text="stripText(limit_of_char, item.user_name)"
           :gradient-color1="item.gradientColor1"
           :gradient-color2="item.gradientColor2"
         />

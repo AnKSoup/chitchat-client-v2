@@ -23,6 +23,7 @@ import { onMounted, ref, watch } from 'vue'
 import ConversationCreation from '@/components/conversation-creation.vue'
 import { useRoute } from 'vue-router'
 import { GetAllTheMessages, SendMessage } from '@/scripts/messages'
+import SearchItem from '@/components/search-item.vue'
 
 const conversation = defineProps(['conversation_id'])
 
@@ -39,11 +40,18 @@ watch(
   },
 )
 
-const conversation_creation = ref(false)
+const display_element = ref('main')
+function alternateElements(element: string) {
+  if (display_element.value == element) {
+    display_element.value = 'main'
+  } else {
+    display_element.value = element
+  }
+}
 
 function newConv() {
   // reset the ref
-  conversation_creation.value = !conversation_creation.value
+  display_element.value = 'main'
   // reload conversations
   LoadConversations()
 }
@@ -87,12 +95,19 @@ onMounted(async () => {
         class="grow"
         :icons-array="[
           [
-            searchIcon,
+            {
+              ...searchIcon,
+              ...{
+                action: () => {
+                  alternateElements('search_for') // ugly but works
+                },
+              },
+            },
             {
               ...createConvIcon,
               ...{
                 action: () => {
-                  conversation_creation = !conversation_creation.valueOf() // ugly but works
+                  alternateElements('create_conversation') // ugly but works
                 },
               },
             },
@@ -105,8 +120,12 @@ onMounted(async () => {
         ]"
       />
     </nav>
-    <ConversationCreation v-if="conversation_creation.valueOf()" @new-conv="newConv()" />
-    <main v-if="!conversation_creation.valueOf()">
+    <ConversationCreation
+      v-if="display_element.valueOf() == 'create_conversation'"
+      @new-conv="newConv()"
+    />
+    <SearchItem v-if="display_element.valueOf() == 'search_for'" />
+    <main v-if="display_element.valueOf() == 'main'">
       <div class="fruity-border chatroom-list">
         <conversationList :conversation-array="conversationArray" />
       </div>
