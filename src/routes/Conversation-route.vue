@@ -18,11 +18,26 @@ import memberList from '@/components/member-list.vue'
 import conversationList from '@/components/conversation-list.vue'
 import writingBar from '@/components/writing-bar.vue'
 import MessageList from '@/components/message-list.vue'
-import { GetConversations } from '@/scripts/conversations'
-import { onMounted, ref } from 'vue'
+import { GetAllMembersOf, GetConversations } from '@/scripts/conversations'
+import { onMounted, ref, watch } from 'vue'
 import ConversationCreation from '@/components/conversation-creation.vue'
+import { useRoute } from 'vue-router'
+import { GetAllTheMessages, SendMessage } from '@/scripts/messages'
 
-defineProps(['conversation_id'])
+const conversation = defineProps(['conversation_id'])
+
+const route = useRoute()
+
+// To react to param changing
+watch(
+  () => route.params.conversation_id,
+  () => {
+    // react to route changes...
+    LoadMembers()
+    messageArray.value = [{ messages: [{ text: 'loading...' }] }]
+    LoadMessages()
+  },
+)
 
 const conversation_creation = ref(false)
 
@@ -33,71 +48,33 @@ function newConv() {
   LoadConversations()
 }
 
-const userTests = [
-  {
-    name: 'jean',
-    picture:
-      'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.KQLtvicVWgm_l6GZPLblHwHaNK%3Fpid%3DApi&f=1&ipt=adaa8c2894d714413ce160f6adaee5a69141b88ee4129699f723e8062426e5e3&ipo=images',
-    gradientColor1: 'blue',
-    gradientColor2: '',
-  },
-  {
-    name: 'sdfjkhjhfgjshdghjghjsdhgjhgsfjhgjfhsgjgfs',
-    picture:
-      'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%2Fid%2FOIP.6oGFxDsrWU6fOpfb1XFVegHaF5%3Fpid%3DApi&f=1&ipt=34db279149c39c84b673559125d27617d37aa9b2ae25240d1e40f01980417e97&ipo=images',
-    gradientColor1: 'blue',
-    gradientColor2: 'green',
-  },
-]
+function triggerError(message: string) {
+  alert(message)
+}
 
 const conversationArray = ref([{ conversation_name: 'loading...' }])
+const userArray = ref([{ user_name: 'loading...' }])
+const messageArray = ref([{ messages: [{ text: 'loading...' }] }])
 
 async function LoadConversations() {
   conversationArray.value = await GetConversations()
 }
 
+async function LoadMembers() {
+  userArray.value = [{ user_name: 'loading...' }]
+  userArray.value = await GetAllMembersOf(conversation.conversation_id)
+}
+
+async function LoadMessages() {
+  await GetAllTheMessages(conversation.conversation_id, 20, messageArray.value)
+}
+
 // Get data on mounted
 onMounted(async () => {
   LoadConversations()
+  LoadMembers()
+  LoadMessages()
 })
-
-const messageList = [
-  {
-    messages: [
-      { text: 'hi', time: '000000' },
-      { text: 'hi', time: '000001' },
-    ],
-    image: '',
-    orientation: '',
-    side: 'left',
-    gradientColor1: 'blue',
-    gradientColor2: '',
-  },
-  {
-    messages: [
-      { text: 'NNOOOOOOO', time: '000000' },
-      { text: 'NNOOOOOOO', time: '000000' },
-      { text: 'NNOOOOOOO', time: '000000' },
-    ],
-    image: '',
-    orientation: '',
-    side: 'right',
-    gradientColor1: 'red',
-    gradientColor2: '',
-  },
-  {
-    messages: [
-      { text: 'hi', time: '000000' },
-      { text: 'hi', time: '000001' },
-      { text: 'hi', time: '000001' },
-    ],
-    image: '',
-    orientation: '',
-    side: 'left',
-    gradientColor1: 'blue',
-    gradientColor2: '',
-  },
-]
 </script>
 
 <template>
@@ -134,11 +111,27 @@ const messageList = [
         <conversationList :conversation-array="conversationArray" />
       </div>
       <div class="conversation">
-        <MessageList :messageList="messageList" />
-        <writing-bar placeholder="Write something..." gradient-color1="red" />
+        <MessageList :messageList="messageArray" />
+        <writing-bar
+          @send="
+            async (input) => {
+              if (input.value) {
+                const result = await SendMessage(conversation.conversation_id, input.value)
+                if (result.success) {
+                  // If it works refresh
+                  input.value = ''
+                  // Then refresh messages at the bottom here
+                } else {
+                  triggerError(result.detail)
+                }
+              }
+            }
+          "
+          placeholder="Write something..."
+        />
       </div>
       <div class="fruity-border user-list">
-        <memberList :user-array="userTests" />
+        <memberList :user-array="userArray" />
       </div>
     </main>
   </div>

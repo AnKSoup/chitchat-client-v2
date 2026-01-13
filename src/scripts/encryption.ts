@@ -7,17 +7,12 @@ import { call } from './api-calls'
 // Uses the built in crypto module from node and the AES-256-GCM algorithm.
 // Key is stored with asymmetric encryption in the G_roup_Member table
 
-// Tries to create a key and an iv.
-export function createKeyAndIV() {
-  try {
-    //Buffers as strings for easier storage
-    const key = crypto.randomBytes(32).toString('base64')
-    const iv = crypto.randomBytes(16).toString('base64')
-
-    return { key: key, iv: iv }
-  } catch (error) {
-    return error
-  }
+export async function retrieveKeyAndIV(user_id: string | number, conversation_id: string | number) {
+  const result = await call('POST', '/group_member/key_iv_of/', {
+    user_id: user_id,
+    conversation_id: conversation_id,
+  })
+  return result.content[0] //is undefined if call doesn't succeed
 }
 
 //encrypts a message and retrieve its tag.

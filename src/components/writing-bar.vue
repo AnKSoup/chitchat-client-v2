@@ -7,6 +7,13 @@ const bar = defineProps(['placeholder', 'gradientColor1', 'gradientColor2'])
 const gradient = ref(generateGradient(bar.gradientColor1, bar.gradientColor2))
 const placeholder = bar.placeholder ? bar.placeholder : '...'
 
+const emit = defineEmits(['send'])
+
+function Send() {
+  emit('send', input)
+  // input.value = ''
+}
+
 const { textarea, input } = useTextareaAutosize()
 </script>
 <template>
@@ -14,7 +21,7 @@ const { textarea, input } = useTextareaAutosize()
     <div>
       <textarea ref="textarea" v-model="input" class="resize-none" :placeholder="placeholder" />
     </div>
-    <button>SEND</button>
+    <button @click="Send()">SEND</button>
   </div>
 </template>
 <style lang="scss" scoped>

@@ -18,6 +18,7 @@ export async function GetConversations() {
         {
           conversation_name: 'No conversations',
           conversation_id: '',
+          gradientColor1: 'red',
         },
       ]
     }
@@ -72,6 +73,20 @@ export async function CreateConversation(conversation_name: string) {
   }
 }
 
+export async function GetAllMembersOf(conversation_id: string) {
+  const result = await call('GET', ConversationRoute + '/members_of/' + conversation_id)
+  if (result.success) {
+    return result.content
+  } else {
+    return [
+      {
+        user_name: 'No Users',
+        gradientColor1: 'red',
+      },
+    ]
+  }
+}
+
 export async function AddMember(
   user_token: string,
   user_id: string,
@@ -82,13 +97,14 @@ export async function AddMember(
 ) {
   const key = encryptKey(public_key, decrypt_key) as object
   const iv = encryptKey(public_key, decrypt_iv) as object
+
   if ('key' in key && 'key' in iv) {
     const member = {
       user_token: user_token,
       user_id: user_id,
       conversation_id: conversation_id,
-      decrypt_key: key,
-      decrypt_iv: iv,
+      decrypt_key: key.key,
+      decrypt_iv: iv.key,
     }
     const result = await call('POST', MemberRoute, member)
     if (!result.success) {

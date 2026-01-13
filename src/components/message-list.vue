@@ -15,6 +15,7 @@ defineProps(['messageList'])
       :side="item.side"
       :gradient-color1="item.gradientColor1"
       :gradient-color2="item.gradientColor2"
+      :id="item.id"
     />
   </div>
 </template>

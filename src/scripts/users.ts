@@ -127,14 +127,14 @@ export async function GenerateKeysForCurrentUser() {
 export async function GetUserPvK() {
   const current_user = GetCurrentUser()
   if (current_user) {
-    return current_user.private_key
+    return current_user.privateKey
   }
 }
 
 export async function GetUserPbK() {
   const current_user = GetCurrentUser()
   if (current_user) {
-    return current_user.public_key
+    return current_user.publicKey
   }
 }
 

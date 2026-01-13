@@ -9,6 +9,7 @@ const message = defineProps([
   'side',
   'gradientColor1',
   'gradientColor2',
+  'id',
 ])
 
 const orientation = !message.orientation ? message.side : message.orientation
