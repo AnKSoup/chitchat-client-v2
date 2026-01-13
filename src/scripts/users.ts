@@ -7,6 +7,7 @@ import {
   GetLocalObject,
   GetLocalValue,
 } from './local-storage'
+import { GenerateKeyPair } from './encryption'
 
 const userRoute = '/user'
 
@@ -87,6 +88,12 @@ export async function LogInUser(form: object) {
       form.user_email as string,
       UpdateUser(current_user, { user_id: await GetUserId() }),
     )
+    //Gen keys if necessary
+    const check = await GetUserPvK()
+    if (!check) {
+      await GenerateKeysForCurrentUser()
+    }
+
     CreateLocalKeyValue('logged_in', 'true')
     //Redirects to the conversations
     router.push('Conversations')
@@ -106,6 +113,28 @@ export async function GetUserId() {
     if (result.success) {
       return result.content.user_id
     }
+  }
+}
+
+export async function GenerateKeysForCurrentUser() {
+  const current_user = GetCurrentUser()
+  const current_email = GetCurrentUserEmail()
+  const keys = await GenerateKeyPair()
+  CreateLocalObject(current_email as string, UpdateUser(current_user, keys))
+}
+
+//Get the user keys !
+export async function GetUserPvK() {
+  const current_user = GetCurrentUser()
+  if (current_user) {
+    return current_user.private_key
+  }
+}
+
+export async function GetUserPbK() {
+  const current_user = GetCurrentUser()
+  if (current_user) {
+    return current_user.public_key
   }
 }
 

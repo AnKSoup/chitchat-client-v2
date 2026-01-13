@@ -21,7 +21,7 @@ export const profileIcon = {
   gradientColor1: '',
   gradientColor2: '',
   action: () => {
-    router.push('Profile')
+    router.push('/Profile')
   },
 }
 
@@ -31,7 +31,7 @@ export const chatIcon = {
   gradientColor1: '',
   gradientColor2: '',
   action: () => {
-    router.push('Conversations')
+    router.push('/Conversations')
   },
 }
 
@@ -41,7 +41,7 @@ export const blogIcon = {
   gradientColor1: '',
   gradientColor2: '',
   action: () => {
-    router.push('Blogs')
+    router.push('/Blogs')
   },
 }
 

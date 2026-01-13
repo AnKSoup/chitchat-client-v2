@@ -18,7 +18,20 @@ import memberList from '@/components/member-list.vue'
 import conversationList from '@/components/conversation-list.vue'
 import writingBar from '@/components/writing-bar.vue'
 import MessageList from '@/components/message-list.vue'
-// import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { GetConversations } from '@/scripts/conversations'
+import { onMounted, ref } from 'vue'
+import ConversationCreation from '@/components/conversation-creation.vue'
+
+defineProps(['conversation_id'])
+
+const conversation_creation = ref(false)
+
+function newConv() {
+  // reset the ref
+  conversation_creation.value = !conversation_creation.value
+  // reload conversations
+  LoadConversations()
+}
 
 const userTests = [
   {
@@ -37,71 +50,16 @@ const userTests = [
   },
 ]
 
-const conversationTest = [
-  {
-    name: 'ELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOooo',
-    image:
-      'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.KQLtvicVWgm_l6GZPLblHwHaNK%3Fpid%3DApi&f=1&ipt=adaa8c2894d714413ce160f6adaee5a69141b88ee4129699f723e8062426e5e3&ipo=images',
-    gradientColor1: 'blue',
-    gradientColor2: '',
-  },
-  {
-    name: 'hi',
-    gradientColor1: 'blue',
-    gradientColor2: 'red',
-  },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-  { name: 'aaa' },
-]
+const conversationArray = ref([{ conversation_name: 'loading...' }])
 
-//Yoinked from the net but it works (I hate css)
+async function LoadConversations() {
+  conversationArray.value = await GetConversations()
+}
 
-//let nav: HTMLElement
-
-// let windowHeight = 0
-// let navHeight = 0
-// const gapHeight = 15
-// const finalHeight = ref('85')
-
-//Updating stuff
-// const handleResize = () => {
-//  windowHeight = window.innerHeight
-//  navHeight = parseInt(getComputedStyle(nav).height)
-//
-//  const result = windowHeight - navHeight - gapHeight * 4
-//
-//  finalHeight.value = `${result}px`
-//}
-
-//Initialization on load
-//window.onload = () => {
-//  const test = document.getElementById('nav')
-//  if (test) {
-//    nav = test
-// }
-//  handleResize()
-//}
-
-//onMounted(() => {
-//  window.addEventListener('resize', handleResize)
-//})
-
-//onBeforeUnmount(() => {
-//  window.removeEventListener('resize', handleResize)
-//})
+// Get data on mounted
+onMounted(async () => {
+  LoadConversations()
+})
 
 const messageList = [
   {
@@ -132,16 +90,6 @@ const messageList = [
       { text: 'hi', time: '000000' },
       { text: 'hi', time: '000001' },
       { text: 'hi', time: '000001' },
-      { text: 'hi', time: '000001' },
-      { text: 'hi', time: '000001' },
-      { text: 'hi', time: '000001' },
-      { text: 'hi', time: '000001' },
-      { text: 'hi', time: '000001' },
-      { text: 'hi', time: '000001' },
-      { text: 'hi', time: '000001' },
-      { text: 'hi', time: '000001' },
-      { text: 'hi', time: '000001' },
-      { text: 'hi', time: '000001' },
     ],
     image: '',
     orientation: '',
@@ -161,14 +109,29 @@ const messageList = [
       <icon-list
         class="grow"
         :icons-array="[
-          [searchIcon, createConvIcon, convSettingsIcon, addUserIcon, remUserIcon, respondIcon],
+          [
+            searchIcon,
+            {
+              ...createConvIcon,
+              ...{
+                action: () => {
+                  conversation_creation = !conversation_creation.valueOf() // ugly but works
+                },
+              },
+            },
+            convSettingsIcon,
+            addUserIcon,
+            remUserIcon,
+            respondIcon,
+          ],
           [loginIcon, logoutIcon],
         ]"
       />
     </nav>
-    <main>
+    <ConversationCreation v-if="conversation_creation.valueOf()" @new-conv="newConv()" />
+    <main v-if="!conversation_creation.valueOf()">
       <div class="fruity-border chatroom-list">
-        <conversationList :conversation-array="conversationTest" />
+        <conversationList :conversation-array="conversationArray" />
       </div>
       <div class="conversation">
         <MessageList :messageList="messageList" />

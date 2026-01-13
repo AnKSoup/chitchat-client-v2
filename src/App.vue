@@ -1,7 +1,13 @@
 <script setup lang="ts"></script>
 
 <template>
+  <!-- <Transition mode="out-in"> -->
+  <!-- <KeepAlive> -->
+  <!-- <Suspense> -->
   <RouterView />
+  <!-- </Suspense> -->
+  <!-- </KeepAlive>
+  </Transition> -->
 </template>
 
 <style>

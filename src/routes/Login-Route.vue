@@ -36,12 +36,12 @@ async function submit() {
     <main class="form">
       <form @submit.prevent="submit()">
         <!-- fields -->
-        <input type="email" v-model="form.user_email" placeholder="user_email" required />
+        <input type="email" v-model="form.user_email" placeholder="Email" required />
         <div>
           <input
             v-bind:type="password.valueOf()"
             v-model="form.user_password"
-            placeholder="user_password"
+            placeholder="Password"
             required
           />
           <div class="eye" @click="ShowHidePassword()">{{ show.valueOf() }}</div>

@@ -11,7 +11,12 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'Home', component: HomeRoute },
-    { path: '/Conversations', name: 'Conversations', component: ConversationRoute },
+    {
+      path: '/Conversations/:conversation_id?',
+      props: true,
+      name: 'Conversations',
+      component: ConversationRoute,
+    },
     { path: '/Blogs', name: 'Blogs', component: BlogRoute },
     { path: '/Signin', name: 'Signin', component: SigninRoute },
     { path: '/Login', name: 'Login', component: LoginRoute },
