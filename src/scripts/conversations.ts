@@ -25,6 +25,11 @@ export async function GetConversations() {
   }
 }
 
+export async function GetConversationByID(conversation_id: string) {
+  const result = await call('GET', ConversationRoute + '/' + conversation_id)
+  return result.content[0]
+}
+
 export async function CreateConversation(conversation_name: string) {
   const current_user = GetCurrentUser()
   //Create the conversation
@@ -71,6 +76,17 @@ export async function CreateConversation(conversation_name: string) {
   } else {
     return result.detail
   }
+}
+
+export async function EditConversation(conversation_id: string, conversation: object) {
+  // PUT     /conversation/:id                           REQ: {user_token, ...,  !conversation_id, !conversation_created_at} //
+  const current_user = GetCurrentUser()
+  //Create the conversation
+  const result = await call('PUT', ConversationRoute + '/' + conversation_id, {
+    user_token: current_user.user_token,
+    ...conversation,
+  })
+  return result
 }
 
 export async function GetAllMembersOf(conversation_id: string) {

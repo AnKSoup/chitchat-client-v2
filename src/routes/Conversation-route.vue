@@ -29,6 +29,7 @@ import ConversationCreation from '@/components/conversation-creation.vue'
 import { useRoute } from 'vue-router'
 import { GetAllTheMessages, SendMessage } from '@/scripts/messages'
 import SearchItem from '@/components/search-item.vue'
+import ConversationEdition from '@/components/conversation-edition.vue'
 
 const conversation = defineProps(['conversation_id'])
 const route = useRoute()
@@ -51,7 +52,14 @@ leaveIcon.value.pop()
 
 function PopulateOwnerArray(isOwner: boolean) {
   const ownerIcons = [
-    convSettingsIcon,
+    {
+      ...convSettingsIcon,
+      ...{
+        action: () => {
+          alternateElements('edit_conv') // ugly but works
+        },
+      },
+    },
     {
       ...addUserIcon,
       ...{
@@ -200,6 +208,12 @@ onMounted(async () => {
     <ConversationCreation
       v-if="display_element.valueOf() == 'create_conversation'"
       @new-conv="newConv()"
+    />
+
+    <ConversationEdition
+      v-if="display_element.valueOf() == 'edit_conv'"
+      :conversation_id="conversation.conversation_id"
+      @edit-conv="newConv()"
     />
 
     <SearchItem

@@ -16,6 +16,7 @@
   box-shadow: variables.$drop-box-shadow;
 }
 
-.user-list {
-  width: fit-content;
+.user-list,
+.chatroom-list {
+  min-width: fit-content;
 }
