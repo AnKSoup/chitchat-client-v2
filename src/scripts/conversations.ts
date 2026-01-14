@@ -1,7 +1,7 @@
 import router from '@/router'
 import { call } from './api-calls'
-import { GetCurrentUser } from './users'
-import { encryptKey } from './encryption'
+import { GetCurrentUser, GetUserPvK } from './users'
+import { decryptKey, encryptKey, retrieveKeyAndIV, retrievePbKOf } from './encryption'
 
 const ConversationRoute = '/conversation'
 const MemberRoute = '/group_member'
@@ -87,7 +87,7 @@ export async function GetAllMembersOf(conversation_id: string) {
   }
 }
 
-export async function AddMember(
+async function AddMember(
   user_token: string,
   user_id: string,
   conversation_id: string,
@@ -115,4 +115,68 @@ export async function AddMember(
   } else if ('error' in iv) {
     return iv.error
   } else return 'Something went wrong with the key generation.'
+}
+
+export async function AddOtherMember(conversation_id: string, user_id: number) {
+  //Getting keys
+  const current_user = GetCurrentUser()
+  const key_iv = await retrieveKeyAndIV(current_user.user_id, conversation_id)
+  const privateKey = await GetUserPvK()
+  //Decrypting symmetric keys
+  const decrypted_key_iv = {
+    key: decryptKey(privateKey, key_iv.decrypt_key).key,
+    iv: decryptKey(privateKey, key_iv.decrypt_iv).key,
+  }
+  //Encrypting key for the new user
+  const user_public_key = await retrievePbKOf(user_id)
+  if (!user_public_key) {
+    return "User you are trying to add doesn't possess any keys for encryption :("
+  }
+  //Adding it
+  const result = await AddMember(
+    current_user.user_token,
+    user_id.toString(),
+    conversation_id,
+    decrypted_key_iv.key,
+    decrypted_key_iv.iv,
+    user_public_key,
+  )
+  return result
+}
+
+export async function IsUserOwner(conversation_id: string) {
+  if (conversation_id) {
+    const current_user = GetCurrentUser()
+    const result = await call('GET', ConversationRoute + '/' + conversation_id)
+    if (result.success && result.content[0].owner_id == current_user.user_id) {
+      return true
+    } else {
+      return false
+    }
+  } else return false
+}
+
+async function RemoveMember(user_id: string, conversation_id: string) {
+  const current_user = GetCurrentUser()
+  const result = await call('PUT', MemberRoute + '/leave/' + conversation_id, {
+    user_id: user_id,
+    user_token: current_user.user_token,
+  })
+  return result
+}
+
+export async function LeaveConversation(conversation_id: string) {
+  if (
+    confirm(
+      'You are about to leave this conversation.\nYOU WILL NOT BE ABLE TO JOIN AGAIN UNLESS THE OWNER DECIDES OTHERWISE.',
+    )
+  ) {
+    const current_user = GetCurrentUser()
+    const result = await RemoveMember(current_user.user_id, conversation_id)
+    if (result.success) {
+      router.push('/Conversations')
+    } else {
+      alert(result.detail)
+    }
+  }
 }

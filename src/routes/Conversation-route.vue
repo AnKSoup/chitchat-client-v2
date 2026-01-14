@@ -5,20 +5,25 @@ import {
   chatIcon,
   convSettingsIcon,
   createConvIcon,
+  leaveConvIcon,
   loginIcon,
   logoutIcon,
   profileIcon,
   remUserIcon,
-  respondIcon,
   searchIcon,
 } from '@/assets/objects/icons'
 import iconList from '@/components/icon-list.vue'
-
 import memberList from '@/components/member-list.vue'
 import conversationList from '@/components/conversation-list.vue'
 import writingBar from '@/components/writing-bar.vue'
 import MessageList from '@/components/message-list.vue'
-import { GetAllMembersOf, GetConversations } from '@/scripts/conversations'
+import {
+  AddOtherMember,
+  GetAllMembersOf,
+  GetConversations,
+  IsUserOwner,
+  LeaveConversation,
+} from '@/scripts/conversations'
 import { onMounted, ref, watch } from 'vue'
 import ConversationCreation from '@/components/conversation-creation.vue'
 import { useRoute } from 'vue-router'
@@ -26,20 +31,9 @@ import { GetAllTheMessages, SendMessage } from '@/scripts/messages'
 import SearchItem from '@/components/search-item.vue'
 
 const conversation = defineProps(['conversation_id'])
-
 const route = useRoute()
 
-// To react to param changing
-watch(
-  () => route.params.conversation_id,
-  () => {
-    // react to route changes...
-    LoadMembers()
-    messageArray.value = [{ messages: [{ text: 'loading...' }] }]
-    LoadMessages()
-  },
-)
-
+//To switch between displayed elements
 const display_element = ref('main')
 function alternateElements(element: string) {
   if (display_element.value == element) {
@@ -49,20 +43,92 @@ function alternateElements(element: string) {
   }
 }
 
+const ownerIconArray = ref([{}])
+ownerIconArray.value.pop()
+
+const leaveIcon = ref([{}])
+leaveIcon.value.pop()
+
+function PopulateOwnerArray(isOwner: boolean) {
+  const ownerIcons = [
+    convSettingsIcon,
+    {
+      ...addUserIcon,
+      ...{
+        action: () => {
+          alternateElements('add_member') // ugly but works
+        },
+      },
+    },
+    remUserIcon,
+  ]
+  if (isOwner) {
+    ownerIconArray.value = ownerIcons
+  } else {
+    ownerIconArray.value = []
+  }
+}
+
+function PopulateLeaveIcon(conversation_id?: string) {
+  if (conversation_id) {
+    leaveIcon.value = [
+      {
+        ...leaveConvIcon,
+        ...{
+          action: () => {
+            LeaveConversation(conversation.conversation_id)
+          },
+        },
+      },
+    ]
+  } else leaveIcon.value = []
+}
+
+const conversationArray = ref([{ conversation_name: 'loading...' }])
+const userArray = ref([{ user_name: 'loading...' }])
+const messageArray = ref([{ messages: [{ text: 'loading...' }] }])
+
+// To react to param changing
+watch(
+  () => route.params.conversation_id,
+  async (newId) => {
+    // react to route changes...
+    if (!newId) {
+      //This likely means a conversation just got left
+      LoadConversations()
+    }
+    PopulateLeaveIcon(newId as string)
+    PopulateOwnerArray(await IsUserOwner(newId as string))
+    LoadMembers()
+    messageArray.value = [{ messages: [{ text: 'loading...' }] }]
+    LoadMessages()
+  },
+)
+
+function triggerError(message: string) {
+  alert(message)
+}
+//Lets the parent execute a function the child should execute but it lets me reuse the component so its a fair trade
+function SearchExecute(input: number) {
+  console.log(input) // works to use to add new members + add props to change name to add user instead of searching
+}
+
+async function AddMemberExecute(input: number) {
+  const result = await AddOtherMember(conversation.conversation_id, input)
+  if (result) {
+    // Fails if not undefined
+    alert(result)
+  } else {
+    fullReload()
+  }
+}
+
 function newConv() {
   // reset the ref
   display_element.value = 'main'
   // reload conversations
   LoadConversations()
 }
-
-function triggerError(message: string) {
-  alert(message)
-}
-
-const conversationArray = ref([{ conversation_name: 'loading...' }])
-const userArray = ref([{ user_name: 'loading...' }])
-const messageArray = ref([{ messages: [{ text: 'loading...' }] }])
 
 async function LoadConversations() {
   conversationArray.value = await GetConversations()
@@ -74,14 +140,26 @@ async function LoadMembers() {
 }
 
 async function LoadMessages() {
+  messageArray.value = [{ messages: [{ text: 'loading...' }] }]
   await GetAllTheMessages(conversation.conversation_id, 20, messageArray.value)
+}
+
+function fullReload() {
+  display_element.value = 'main'
+  LoadConversations()
+  LoadMembers()
+  LoadMessages()
 }
 
 // Get data on mounted
 onMounted(async () => {
   LoadConversations()
-  LoadMembers()
-  LoadMessages()
+  if (conversation.conversation_id) {
+    PopulateLeaveIcon(conversation.conversation_id)
+    PopulateOwnerArray(await IsUserOwner(conversation.conversation_id))
+    LoadMembers()
+    LoadMessages()
+  }
 })
 </script>
 
@@ -111,25 +189,40 @@ onMounted(async () => {
                 },
               },
             },
-            convSettingsIcon,
-            addUserIcon,
-            remUserIcon,
-            respondIcon,
+            ...ownerIconArray,
+            // respondIcon, //Not implemented yet
           ],
-          [loginIcon, logoutIcon],
+          [...leaveIcon, loginIcon, logoutIcon],
         ]"
       />
     </nav>
+
     <ConversationCreation
       v-if="display_element.valueOf() == 'create_conversation'"
       @new-conv="newConv()"
     />
-    <SearchItem v-if="display_element.valueOf() == 'search_for'" />
+
+    <SearchItem
+      :execute="SearchExecute"
+      button="Search"
+      v-if="display_element.valueOf() == 'search_for'"
+    />
+
+    <SearchItem
+      :execute="AddMemberExecute"
+      button="Search"
+      hint="Click on a user to add them to the conversation."
+      v-if="display_element.valueOf() == 'add_member'"
+    />
+
     <main v-if="display_element.valueOf() == 'main'">
       <div class="fruity-border chatroom-list">
-        <conversationList :conversation-array="conversationArray" />
+        <conversationList
+          :conversation-array="conversationArray"
+          :current_conversation="conversation.conversation_id"
+        />
       </div>
-      <div class="conversation">
+      <div class="conversation" v-if="conversation.conversation_id">
         <MessageList :messageList="messageArray" />
         <writing-bar
           @send="
@@ -149,7 +242,7 @@ onMounted(async () => {
           placeholder="Write something..."
         />
       </div>
-      <div class="fruity-border user-list">
+      <div class="fruity-border user-list" v-if="conversation.conversation_id">
         <memberList :user-array="userArray" />
       </div>
     </main>

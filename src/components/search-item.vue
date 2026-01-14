@@ -4,6 +4,8 @@ import { SearchForUser } from '@/scripts/users'
 import { reactive, ref } from 'vue'
 import MemberList from './member-list.vue'
 
+defineProps(['execute', 'button', 'hint'])
+
 const form = reactive({
   query: '',
 })
@@ -19,19 +21,22 @@ async function submit() {
     <form @submit.prevent="submit()">
       <!-- fields -->
       <input type="text" v-model="form.query" placeholder="Username" required />
-      <button @click="submit">Search</button>
+      <button @click="submit">{{ button }}</button>
     </form>
     <p v-if="result.error" class="error">{{ result.error }}</p>
-    <MemberList
-      @selected="
-        (input) => {
-          console.log(input)
-        }
-      "
-      :user-array="result.content"
-      char-limit="30"
-      v-if="result.content"
-    />
+    <div class="result-container" v-if="result.content">
+      <p v-if="hint" class="hint">{{ hint }}</p>
+      <MemberList
+        @selected="
+          (input) => {
+            //Lets parent execute a function where the input is passed
+            execute(input)
+          }
+        "
+        :user-array="result.content"
+        char-limit="30"
+      />
+    </div>
   </main>
 </template>
 
@@ -46,7 +51,13 @@ async function submit() {
   padding-top: 0;
 }
 
+.result-container {
+  display: flex;
+  gap: variables.$desktop_spacing_big;
+  height: 50vh; //ew
+}
+
 .effect-container {
-  max-height: 50vh; //Ok css you win
+  box-shadow: variables.$drop-box-shadow;
 }
 </style>

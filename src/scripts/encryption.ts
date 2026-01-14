@@ -15,6 +15,11 @@ export async function retrieveKeyAndIV(user_id: string | number, conversation_id
   return result.content[0] //is undefined if call doesn't succeed
 }
 
+export async function retrievePbKOf(user_id: number) {
+  const result = await call('GET', '/user/' + user_id)
+  return result.content[0].user_public_key
+}
+
 //encrypts a message and retrieve its tag.
 export function encryptMessage(message: string, key: string, iv: string) {
   try {
@@ -51,7 +56,7 @@ export function decryptMessage(message: string, key: string, iv: string, tag: st
 
     return { message: result }
   } catch (error) {
-    return error
+    return { message: "ERROR : Couldn't decrypt message" }
   }
 }
 

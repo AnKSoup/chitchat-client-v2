@@ -7,7 +7,7 @@ function GoToConv(conversation_id: string) {
   router.push('/Conversations/' + conversation_id)
 }
 
-defineProps(['conversationArray'])
+defineProps(['conversationArray', 'current_conversation'])
 </script>
 
 <template>
@@ -21,6 +21,7 @@ defineProps(['conversationArray'])
         @click="GoToConv(item.conversation_id)"
       >
         <text-bar
+          :class="{ not_selected: current_conversation != item.conversation_id }"
           :text="stripText(22, item.conversation_name)"
           :image="item.image"
           :gradient-color1="item.gradientColor1"

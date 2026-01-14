@@ -74,26 +74,39 @@ export async function SignInUser(form: object) {
 
 export async function LogInUser(form: object) {
   const result = await call('POST', userRoute + '/login', form)
+  let first_login = false
 
   //If it succeeds => create it in local storage then redirects to conversations
   //Else return the error to the user
   if (result.success && 'user_email' in form) {
-    //Creates the user in local storage
-    CreateLocalObject(form.user_email as string, CreateUser(undefined, result.content.user_token))
-    //Sets said user as the main account
-    UseCurrentUser(form.user_email as string)
-    //Sets the id of the user
-    const current_user = GetCurrentUser()
-    CreateLocalObject(
-      form.user_email as string,
-      UpdateUser(current_user, { user_id: await GetUserId() }),
-    )
-    //Gen keys if necessary
-    const check = await GetUserPvK()
-    if (!check) {
-      await GenerateKeysForCurrentUser()
+    //CHECK IF USER ALREADY EXISTS!!!!!
+    if (GetLocalValue(form.user_email as string) == null) {
+      first_login = true
+    }
+    if (first_login) {
+      //Creates the user in local storage
+      CreateLocalObject(form.user_email as string, CreateUser(undefined, result.content.user_token))
+    } else {
+      //Regenerates token
+      const old = GetLocalObject(form.user_email as string)
+      CreateLocalObject(
+        form.user_email as string,
+        UpdateUser(old, { user_token: result.content.user_token }),
+      )
     }
 
+    //Sets said user as the main account
+    UseCurrentUser(form.user_email as string)
+
+    if (first_login) {
+      //Sets the id of the user
+      const current_user = GetCurrentUser()
+      CreateLocalObject(
+        form.user_email as string,
+        UpdateUser(current_user, { user_id: await GetUserId() }),
+      )
+      await GenerateKeysForCurrentUser()
+    }
     CreateLocalKeyValue('logged_in', 'true')
     //Redirects to the conversations
     router.push('Conversations')
@@ -121,6 +134,8 @@ export async function GenerateKeysForCurrentUser() {
   const current_email = GetCurrentUserEmail()
   const keys = await GenerateKeyPair()
   CreateLocalObject(current_email as string, UpdateUser(current_user, keys))
+  //then updates it to the db
+  await UploadPbK()
 }
 
 //Get the user keys !
@@ -167,4 +182,17 @@ export async function SearchForUser(query: string) {
   } else {
     return { error: result.detail }
   }
+}
+
+export async function EditUser(user_id: number | string, user_token: string, user: object) {
+  const result = await call('PUT', userRoute + '/' + user_id, { user_token: user_token, ...user })
+  return result
+}
+
+export async function UploadPbK() {
+  const current_user = GetCurrentUser()
+  const result = await EditUser(current_user.user_id, current_user.user_token, {
+    user_public_key: current_user.publicKey,
+  })
+  return result
 }
