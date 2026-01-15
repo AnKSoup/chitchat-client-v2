@@ -56,7 +56,8 @@ form {
 
 input,
 .error,
-.hint {
+.hint,
+.field {
   padding-top: variables.$desktop-spacing-medium;
   padding-bottom: variables.$desktop-spacing-medium;
   padding-inline: variables.$desktop-spacing-huge;

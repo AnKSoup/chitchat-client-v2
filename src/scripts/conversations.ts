@@ -22,6 +22,14 @@ export async function GetConversations() {
         },
       ]
     }
+  } else {
+    return [
+      {
+        conversation_name: "Couldn't load...",
+        conversation_id: '',
+        gradientColor1: 'red',
+      },
+    ]
   }
 }
 

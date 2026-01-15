@@ -55,7 +55,7 @@ async function submit() {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use '@/assets/styles/main-ui.scss';
 @use '@/assets/styles/form.scss';
 @use '@/assets/styles/button.scss';

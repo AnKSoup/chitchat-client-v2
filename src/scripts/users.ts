@@ -3,6 +3,7 @@ import { call } from './api-calls'
 import {
   CreateLocalKeyValue,
   CreateLocalObject,
+  DeleteLocalObject,
   DeleteLocalValue,
   GetLocalObject,
   GetLocalValue,
@@ -99,7 +100,7 @@ export async function LogInUser(form: object) {
     UseCurrentUser(form.user_email as string)
 
     if (first_login) {
-      //Sets the id of the user
+      //Sets the id of the user1
       const current_user = GetCurrentUser()
       CreateLocalObject(
         form.user_email as string,
@@ -169,6 +170,14 @@ export async function LogOutUser(user_token: string) {
   }
 }
 
+export function SoftLogout() {
+  const current_email = GetCurrentUserEmail()
+  const current_user = GetCurrentUser()
+  CreateLocalObject(current_email as string, UpdateUser(current_user, { user_token: undefined }))
+  RemoveCurrentUser()
+  router.push('/Login')
+}
+
 export async function SearchForUser(query: string) {
   //Returns a list of users like "query"
   const result = await call('GET', userRoute + '/search/' + query)
@@ -184,9 +193,33 @@ export async function SearchForUser(query: string) {
   }
 }
 
-export async function EditUser(user_id: number | string, user_token: string, user: object) {
+export async function GetMyInfo() {
+  const current_user = GetCurrentUser()
+  const result = await call('POST', userRoute + '/' + current_user.user_id, {
+    user_token: current_user.user_token,
+  })
+  return result.content[0]
+}
+
+async function EditUser(user_id: number | string, user_token: string, user: object) {
   const result = await call('PUT', userRoute + '/' + user_id, { user_token: user_token, ...user })
   return result
+}
+
+export async function EditCurrentUser(user: object) {
+  const current_user = GetCurrentUser()
+  const old_email = GetCurrentUserEmail()
+  const result = await EditUser(current_user.user_id, current_user.user_token, user)
+  if (result.success && 'user_email' in user && old_email) {
+    if (old_email != user.user_email) {
+      //Copy content and change email : so far no need to edit other stuff
+      CreateLocalObject(user.user_email as string, current_user)
+      UseCurrentUser(user.user_email as string)
+      DeleteLocalObject(old_email)
+    }
+  } else {
+    return result.detail
+  }
 }
 
 export async function UploadPbK() {
@@ -195,4 +228,15 @@ export async function UploadPbK() {
     user_public_key: current_user.publicKey,
   })
   return result
+}
+
+export async function ChangePass(new_user_password: string) {
+  const current_user = GetCurrentUser()
+  const result = await call('PUT', userRoute + '/change_pass/' + current_user.user_id, {
+    user_token: current_user.user_token,
+    user_password: new_user_password,
+  })
+  if (!result.success) {
+    return result.detail
+  }
 }

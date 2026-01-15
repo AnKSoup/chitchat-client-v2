@@ -6,6 +6,7 @@ import BlogRoute from '@/routes/Blog-route.vue'
 import SigninRoute from '@/routes/Signin-Route.vue'
 import LoginRoute from '@/routes/Login-Route.vue'
 import { CanUserAccess } from './guard'
+import ProfileRoute from '@/routes/Profile-route.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,7 +18,8 @@ const router = createRouter({
       name: 'Conversations',
       component: ConversationRoute,
     },
-    { path: '/Blogs', name: 'Blogs', component: BlogRoute },
+    { path: '/Blogs/:blog_id', props: true, name: 'Blogs', component: BlogRoute },
+    { path: '/Profile', name: 'Profile', component: ProfileRoute },
     { path: '/Signin', name: 'Signin', component: SigninRoute },
     { path: '/Login', name: 'Login', component: LoginRoute },
   ],

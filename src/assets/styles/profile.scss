@@ -1,0 +1,56 @@
+@use 'variables';
+
+.card {
+  display: flex;
+
+  flex-direction: column;
+  justify-content: space-between;
+  padding: variables.$desktop-spacing-medium;
+
+  border-radius: variables.$desktop-spacing-big;
+
+  box-shadow: variables.$inner-box-shadow, variables.$inner-gloss;
+  border: variables.$desktop-border;
+  background-color: rgba(255, 255, 255, 0.5);
+  div {
+    button {
+      width: 100%;
+    }
+  }
+}
+
+.field-container,
+.field-pass-container {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$desktop-spacing-medium;
+}
+
+.field-pass-container {
+  flex-direction: row;
+  .field {
+    flex: 1;
+  }
+}
+
+.field-bundle,
+.button-bundle {
+  display: flex;
+  gap: variables.$desktop-spacing-small;
+}
+
+.button-bundle {
+  width: 100%;
+  button {
+    width: 100%;
+    flex: 1;
+  }
+}
+
+.field {
+  margin: 0;
+}
+
+.error {
+  align-self: center;
+}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CreateConversation, EditConversation, GetConversationByID } from '@/scripts/conversations'
+import { EditConversation, GetConversationByID } from '@/scripts/conversations'
 import { onMounted, reactive, ref } from 'vue'
 
 const conversation = defineProps(['conversation_id'])
@@ -39,7 +39,7 @@ async function submit() {
   </main>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use '@/assets/styles/main-ui.scss';
 @use '@/assets/styles/form.scss';
 @use '@/assets/styles/button.scss';

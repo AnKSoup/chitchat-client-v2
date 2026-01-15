@@ -2,6 +2,7 @@
 import crypto from 'crypto'
 import { Buffer } from 'buffer'
 import { call } from './api-calls'
+import { GetCurrentUser } from './users'
 
 // ## SYMMETRIC LOGIC
 // Uses the built in crypto module from node and the AES-256-GCM algorithm.
@@ -56,7 +57,7 @@ export function decryptMessage(message: string, key: string, iv: string, tag: st
 
     return { message: result }
   } catch (error) {
-    return { message: "ERROR : Couldn't decrypt message" }
+    return { message: "ERROR : Couldn't decrypt message. You may have lost the keys." }
   }
 }
 
@@ -91,4 +92,24 @@ export function decryptKey(privateKey: string, encryptedKey: string) {
   } catch (error) {
     return { error: error }
   }
+}
+
+//## Checks
+
+//Checks if keys are here / same as in the db
+export async function KeysCheckers() {
+  const current_user = GetCurrentUser()
+  // key present ?
+  if (!current_user.publicKey && !current_user.privateKey) {
+    return { error: true, text: 'Missing keys from local storage!' }
+  }
+  // same keys in the db ?
+  const PbK = await retrievePbKOf(current_user.user_id)
+  if (!PbK) {
+    return { error: true, text: 'Missing public keys in the DB!' }
+  } else if (PbK != current_user.publicKey) {
+    return { error: true, text: 'Keys are not matching!' }
+  }
+
+  return { error: false, text: 'Your keys are ok...' }
 }

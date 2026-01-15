@@ -1,7 +1,7 @@
 // Prevents unauthed users to go to certain routes
 import { GetLocalValue } from '@/scripts/local-storage'
 
-const guardedRoutes = ['/Conversations', '/Blogs']
+const guardedRoutes = ['/Conversations', '/Blogs', '/Profile']
 
 function isAuthed() {
   const loggedIn = GetLocalValue('logged_in')

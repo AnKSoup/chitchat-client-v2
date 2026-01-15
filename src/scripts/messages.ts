@@ -140,7 +140,7 @@ export async function FormatMessage(
     ) as object
 
     if ('message' in decrypted_message) {
-      let messages = [
+      const messages = [
         {
           text: decrypted_message.message,
           time: message.message_sent_at,
@@ -148,7 +148,7 @@ export async function FormatMessage(
         },
       ]
       //Check if previous message is of same user
-      //If so => pops it and retrieves the message
+      //If so => delete previous message and fusions it with the current one
       // console.log(array)
       const previous_message = array[0]
       if (
@@ -188,9 +188,3 @@ export async function FormatMessage(
     return null
   }
 }
-
-// //Bundle near messages
-// function BundleMessages(array: Array<object>) {
-//   //Takes in an array and bundles near messages
-//   console.log(array)
-// }
