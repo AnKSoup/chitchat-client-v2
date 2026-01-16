@@ -30,6 +30,7 @@ import { useRoute } from 'vue-router'
 import { GetAllTheMessages, SendMessage } from '@/scripts/messages'
 import SearchItem from '@/components/search-item.vue'
 import ConversationEdition from '@/components/conversation-edition.vue'
+import router from '@/router'
 
 const conversation = defineProps(['conversation_id'])
 const route = useRoute()
@@ -247,6 +248,8 @@ onMounted(async () => {
                   // If it works refresh
                   input.value = ''
                   // Then refresh messages at the bottom here
+                  LoadMessages() //This is very bad but this will do for now
+                  //Need a way to tell when another user sends a message + caching messages + appending message at the end
                 } else {
                   triggerError(result.detail)
                 }
@@ -257,7 +260,14 @@ onMounted(async () => {
         />
       </div>
       <div class="fruity-border user-list" v-if="conversation.conversation_id">
-        <memberList :user-array="userArray" />
+        <memberList
+          @selected="
+            (input) => {
+              router.push('/Blogs/' + input)
+            }
+          "
+          :user-array="userArray"
+        />
       </div>
     </main>
   </div>
@@ -267,9 +277,4 @@ onMounted(async () => {
 @use '@/assets/styles/main-ui.scss';
 @use '@/assets/styles/conversation.scss';
 @use '@/assets/styles/fruity-border.scss';
-
-// OVERRIDE: because the height cannot get calculated properly
-//main {
-//  height: v-bind(finalHeight);
-//}
 </style>

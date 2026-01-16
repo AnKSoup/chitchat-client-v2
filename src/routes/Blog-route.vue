@@ -6,7 +6,7 @@ import {
   loginIcon,
   logoutIcon,
   profileIcon,
-  respondIcon,
+  // respondIcon,
   searchIcon,
 } from '@/assets/objects/icons'
 import CommentList from '@/components/comment-list.vue'
@@ -14,14 +14,89 @@ import iconList from '@/components/icon-list.vue'
 import profilePictureItem from '@/components/profile-picture-item.vue'
 import TextBar from '@/components/text-bar.vue'
 import WritingBar from '@/components/writing-bar.vue'
+import { GetBlog, IsUserOwnerOfBlog, UpdateBlog } from '@/scripts/blogs'
+import { generateGradient } from '@/scripts/gradients'
+import { GetUserInfo } from '@/scripts/users'
+import { onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
-const author = {
-  image:
-    'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ytimg.com%2Fvi%2FgEE2nFbVWG8%2Fmaxresdefault.jpg&f=1&nofb=1&ipt=c5bce5cce999383ec862808d443d98dcdb70b057aa2cc16ec78dc6d327ce9c01',
-  name: 'Jean',
-  gradientColor1: 'blue',
-  gradientColor2: '',
+const blog = defineProps(['blog_id'])
+const route = useRoute()
+
+const edit = ref(false)
+const error = ref('')
+
+function ChangeEditValue(bool: boolean) {
+  edit.value = bool
 }
+
+const author = ref({
+  image: '',
+  name: 'loading...',
+  gradientColor1: '',
+  gradientColor2: '',
+})
+
+function Reload() {
+  ChangeEditValue(false)
+  PopulateOwnerArray(IsUserOwnerOfBlog(blog.blog_id))
+  FetchBlog()
+  GetUserInfo(blog.blog_id)
+}
+
+async function EditMyBlog() {
+  const result = await UpdateBlog(blog_content.value)
+  if (!result.success) {
+    error.value = result.detail
+  } else {
+    Reload()
+  }
+}
+
+const red = ref(generateGradient('red'))
+
+const blog_content = ref('<h1>Loading...</h1>')
+
+const ownerIconArray = ref([{}])
+
+function PopulateOwnerArray(isOwner: boolean) {
+  const ownerIcons = [
+    {
+      ...blogSettingsIcon,
+      ...{
+        action: () => {
+          ChangeEditValue(true)
+        },
+      },
+    },
+  ]
+  if (isOwner) {
+    ownerIconArray.value = ownerIcons
+  } else {
+    ownerIconArray.value = []
+  }
+}
+
+async function FetchBlog() {
+  const result = await GetBlog(blog.blog_id)
+  blog_content.value = result.content
+
+  author.value = await GetUserInfo(blog.blog_id)
+}
+
+onMounted(async () => {
+  Reload()
+})
+
+// To react to param changing
+watch(
+  () => route.params.blog_id,
+  async (newId) => {
+    ChangeEditValue(false)
+    PopulateOwnerArray(IsUserOwnerOfBlog(newId as string))
+    FetchBlog()
+  },
+)
 
 const commentClusters = [
   [
@@ -91,10 +166,6 @@ const commentClusters = [
     },
   ],
 ]
-
-const example = `<p style="color:red">I am some raw html</p>
-<a href="https://www.youtube.com/">my site</a>
-<a href="https://www.youtube.com/" target="_blank">my site2</a>`
 </script>
 
 <template>
@@ -106,13 +177,40 @@ const example = `<p style="color:red">I am some raw html</p>
       <icon-list
         class="grow"
         :icons-array="[
-          [searchIcon, blogSettingsIcon, respondIcon],
+          [
+            searchIcon,
+            ...ownerIconArray,
+            // respondIcon, Not yet
+          ],
           [loginIcon, logoutIcon],
         ]"
       />
     </nav>
     <main>
-      <iframe class="blog" :srcdoc="example" sandbox="" frameborder="0"></iframe>
+      <iframe
+        v-if="!edit.valueOf()"
+        class="blog"
+        :srcdoc="blog_content"
+        sandbox=""
+        frameborder="0"
+      ></iframe>
+
+      <div class="card blog" v-if="edit.valueOf()">
+        <div class="field-container">
+          <textarea
+            class="field"
+            type="text"
+            v-model="blog_content"
+            placeholder="Write your thoughts here..."
+          />
+          <p class="error" v-if="error">{{ error }}</p>
+        </div>
+        <div class="button-bundle">
+          <button class="red" @click="ChangeEditValue(false)">Cancel</button>
+          <button @click="EditMyBlog()">Change</button>
+        </div>
+      </div>
+
       <div class="comments">
         <div class="author">
           <profile-picture-item
@@ -140,4 +238,25 @@ const example = `<p style="color:red">I am some raw html</p>
 <style lang="scss" scoped>
 @use '@/assets/styles/main-ui.scss';
 @use '@/assets/styles/blog.scss';
+
+@use '@/assets/styles/variables.scss';
+@use '@/assets/styles/profile.scss';
+@use '@/assets/styles/form.scss';
+@use '@/assets/styles/button.scss';
+// // OVERRIDE:
+.card {
+  gap: variables.$desktop_spacing_medium;
+}
+.field-container {
+  height: 100%;
+}
+.field {
+  resize: none;
+  height: 100%;
+}
+.red {
+  background:
+    variables.$simple-highlight,
+    radial-gradient(100% 100% at 50% 100%, v-bind('red.color2') 0%, v-bind('red.color1') 100%);
+}
 </style>

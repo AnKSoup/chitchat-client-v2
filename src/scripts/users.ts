@@ -193,6 +193,25 @@ export async function SearchForUser(query: string) {
   }
 }
 
+export async function GetUserInfo(user_id: string) {
+  const result = await call('GET', userRoute + '/' + user_id)
+  if (!result.success) {
+    return {
+      image: '',
+      name: 'No author...',
+      gradientColor1: 'red',
+      gradientColor2: '',
+    }
+  } else {
+    return {
+      image: '',
+      name: result.content[0].user_name,
+      gradientColor1: '',
+      gradientColor2: '',
+    }
+  }
+}
+
 export async function GetMyInfo() {
   const current_user = GetCurrentUser()
   const result = await call('POST', userRoute + '/' + current_user.user_id, {

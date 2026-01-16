@@ -78,6 +78,7 @@ export async function SendMessage(
 ) {
   //Getting keys
   const current_user = GetCurrentUser()
+  //those should be cached temporarily
   const key_iv = await retrieveKeyAndIV(current_user.user_id, conversation_id)
   const privateKey = await GetUserPvK()
   //Decrypting symmetric keys
@@ -117,6 +118,7 @@ export async function FormatMessage(
 ) {
   //Getting keys
   const current_user = GetCurrentUser()
+  //those should be cached temporarily
   const key_iv = await retrieveKeyAndIV(current_user.user_id, conversation_id)
   const privateKey = await GetUserPvK()
   //Decrypting symmetric keys
