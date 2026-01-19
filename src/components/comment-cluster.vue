@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import CommentItem from './comment-item.vue'
-defineProps(['comments'])
+defineProps(['comments', 'selected_comment'])
+
+const emit = defineEmits(['selected'])
+function SelectComment(comment: object) {
+  if ('id' in comment) {
+    emit('selected', comment.id)
+  }
+}
 </script>
 
 <template>
@@ -9,6 +16,7 @@ defineProps(['comments'])
     <CommentItem
       v-for="(comment, index) in comments"
       v-bind:key="index"
+      @click="SelectComment(comment)"
       :image="comment.image"
       :username="comment.username"
       :username-response="comment.usernameResponse"
@@ -19,7 +27,8 @@ defineProps(['comments'])
       :gradient-color2="comment.gradientColor2"
       :gradient-color3="comment.gradientColor3"
       :gradient-color4="comment.gradientColor4"
-      v-bind:class="index != 0 ? 'response' : ''"
+      :id="comment.id"
+      :class="[index != 0 ? 'response' : '', { selected: selected_comment == comment.id }]"
     />
   </div>
 </template>

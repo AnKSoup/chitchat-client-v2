@@ -3,6 +3,7 @@
 .comment-cluster-container {
   display: flex;
   flex-direction: column;
+  height: 100%;
   gap: variables.$desktop-spacing-medium;
   padding-top: variables.$desktop-spacing-medium;
   padding-bottom: variables.$desktop-spacing-medium;

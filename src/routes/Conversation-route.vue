@@ -119,7 +119,8 @@ function triggerError(message: string) {
 }
 //Lets the parent execute a function the child should execute but it lets me reuse the component so its a fair trade
 function SearchExecute(input: number) {
-  console.log(input) // works to use to add new members + add props to change name to add user instead of searching
+  // works to use to add new members + add props to change name to add user instead of searching
+  router.push('/Blogs/' + input)
 }
 
 async function AddMemberExecute(input: number) {

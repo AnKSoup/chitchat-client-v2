@@ -16,6 +16,7 @@ const comment = defineProps([
   'gradientColor2',
   'gradientColor3',
   'gradientColor4',
+  'id',
 ])
 const gradient = ref(generateGradient(comment.gradientColor1, comment.gradientColor2))
 const gradient2 = ref(generateGradient(comment.gradientColor3, comment.gradientColor4))

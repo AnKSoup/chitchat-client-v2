@@ -12,9 +12,12 @@ import {
 import CommentList from '@/components/comment-list.vue'
 import iconList from '@/components/icon-list.vue'
 import profilePictureItem from '@/components/profile-picture-item.vue'
+import SearchItem from '@/components/search-item.vue'
 import TextBar from '@/components/text-bar.vue'
 import WritingBar from '@/components/writing-bar.vue'
-import { GetBlog, IsUserOwnerOfBlog, UpdateBlog } from '@/scripts/blogs'
+import router from '@/router'
+import { GetBlog, IsUserOwnerOfBlog, PostBlog, UpdateBlog } from '@/scripts/blogs'
+import { FormatComments, PostComment } from '@/scripts/comment'
 import { generateGradient } from '@/scripts/gradients'
 import { GetUserInfo } from '@/scripts/users'
 import { onMounted, ref, watch } from 'vue'
@@ -23,12 +26,17 @@ import { useRoute } from 'vue-router'
 const blog = defineProps(['blog_id'])
 const route = useRoute()
 
-const edit = ref(false)
-const error = ref('')
-
-function ChangeEditValue(bool: boolean) {
-  edit.value = bool
+//To switch between displayed elements
+const display_element = ref('main')
+function alternateElements(element: string) {
+  if (display_element.value == element) {
+    display_element.value = 'main'
+  } else {
+    display_element.value = element
+  }
 }
+
+const error = ref('')
 
 const author = ref({
   image: '',
@@ -38,10 +46,11 @@ const author = ref({
 })
 
 function Reload() {
-  ChangeEditValue(false)
+  alternateElements('main')
   PopulateOwnerArray(IsUserOwnerOfBlog(blog.blog_id))
   FetchBlog()
   GetUserInfo(blog.blog_id)
+  LoadComments()
 }
 
 async function EditMyBlog() {
@@ -53,9 +62,34 @@ async function EditMyBlog() {
   }
 }
 
+function triggerError(message: string) {
+  alert(message)
+}
+function SearchExecute(input: number) {
+  router.push('/Blogs/' + input)
+}
+
 const red = ref(generateGradient('red'))
 
 const blog_content = ref('<h1>Loading...</h1>')
+
+const commentClusters = ref([
+  [
+    {
+      image: '',
+      username: '',
+      usernameResponse: '',
+      responsePreview: '',
+      date: '',
+      content: 'Loading...',
+      id: '',
+      gradientColor1: '',
+      gradientColor2: '',
+      gradientColor3: '',
+      gradientColor4: '',
+    },
+  ],
+])
 
 const ownerIconArray = ref([{}])
 
@@ -65,7 +99,7 @@ function PopulateOwnerArray(isOwner: boolean) {
       ...blogSettingsIcon,
       ...{
         action: () => {
-          ChangeEditValue(true)
+          alternateElements('edit')
         },
       },
     },
@@ -74,6 +108,37 @@ function PopulateOwnerArray(isOwner: boolean) {
     ownerIconArray.value = ownerIcons
   } else {
     ownerIconArray.value = []
+  }
+}
+
+async function LoadComments() {
+  commentClusters.value = [
+    [
+      {
+        image: '',
+        username: '',
+        usernameResponse: '',
+        responsePreview: '',
+        date: '',
+        content: 'Loading...',
+        id: '',
+        gradientColor1: '',
+        gradientColor2: '',
+        gradientColor3: '',
+        gradientColor4: '',
+      },
+    ],
+  ]
+  const result = await FormatComments(blog.blog_id)
+  commentClusters.value = result
+}
+
+const selected = ref('0')
+function SelectComment(input: string) {
+  if (selected.value == input) {
+    selected.value = '0'
+  } else {
+    selected.value = input
   }
 }
 
@@ -92,80 +157,11 @@ onMounted(async () => {
 watch(
   () => route.params.blog_id,
   async (newId) => {
-    ChangeEditValue(false)
+    alternateElements('main')
     PopulateOwnerArray(IsUserOwnerOfBlog(newId as string))
     FetchBlog()
   },
 )
-
-const commentClusters = [
-  [
-    {
-      image: '',
-      username: 'mister1',
-      usernameResponse: '',
-      responsePreview: '',
-      date: '0000',
-      content: 'je suis un commentaire',
-      gradientColor1: 'blue',
-      gradientColor2: '',
-      gradientColor3: '',
-      gradientColor4: '',
-    },
-    {
-      image: '',
-      username: 'mister2',
-      usernameResponse: 'Mister1',
-      responsePreview: 'je suis un commentaire',
-      date: '0000',
-      content: 'je suis un commentaire aussi',
-      gradientColor1: '',
-      gradientColor2: '',
-      gradientColor3: 'blue',
-      gradientColor4: '',
-    },
-    {
-      image: '',
-      username: 'mister2',
-      usernameResponse: 'Mister1',
-      responsePreview: 'je suis un commentaire',
-      date: '0000',
-      content: 'je suis un commentaire aussi',
-      gradientColor1: '',
-      gradientColor2: '',
-      gradientColor3: 'blue',
-      gradientColor4: '',
-    },
-  ],
-  [
-    {
-      image: '',
-      username: 'mister1',
-      usernameResponse: '',
-      responsePreview: '',
-      date: '0000',
-      content: 'je suis un commentaire',
-      gradientColor1: 'blue',
-      gradientColor2: '',
-      gradientColor3: '',
-      gradientColor4: '',
-    },
-  ],
-  [
-    {
-      image: '',
-      username: 'mister5',
-      usernameResponse: '',
-      responsePreview: '',
-      date: '0000',
-      content: 'je suis un commentaire',
-      gradientColor1: 'blue',
-      gradientColor2: '',
-      gradientColor3: '',
-      gradientColor4: '',
-    },
-  ],
-]
 </script>
 
 <template>
@@ -178,7 +174,14 @@ const commentClusters = [
         class="grow"
         :icons-array="[
           [
-            searchIcon,
+            {
+              ...searchIcon,
+              ...{
+                action: () => {
+                  alternateElements('search') // ugly but works
+                },
+              },
+            },
             ...ownerIconArray,
             // respondIcon, Not yet
           ],
@@ -188,14 +191,14 @@ const commentClusters = [
     </nav>
     <main>
       <iframe
-        v-if="!edit.valueOf()"
+        v-if="display_element.valueOf() == 'main'"
         class="blog"
         :srcdoc="blog_content"
         sandbox=""
         frameborder="0"
       ></iframe>
 
-      <div class="card blog" v-if="edit.valueOf()">
+      <div class="card blog" v-if="display_element.valueOf() == 'edit'">
         <div class="field-container">
           <textarea
             class="field"
@@ -206,10 +209,17 @@ const commentClusters = [
           <p class="error" v-if="error">{{ error }}</p>
         </div>
         <div class="button-bundle">
-          <button class="red" @click="ChangeEditValue(false)">Cancel</button>
+          <button class="red" @click="alternateElements('main')">Cancel</button>
           <button @click="EditMyBlog()">Change</button>
         </div>
       </div>
+
+      <search-item
+        style="padding: 0"
+        v-if="display_element.valueOf() == 'search'"
+        :execute="SearchExecute"
+        button="Search"
+      />
 
       <div class="comments">
         <div class="author">
@@ -224,8 +234,27 @@ const commentClusters = [
             :gradient-color2="author.gradientColor2"
           />
         </div>
-        <comment-list :comment-clusters="commentClusters" />
+        <comment-list
+          @selected="SelectComment"
+          :comment-clusters="commentClusters"
+          :selected_comment="selected"
+        />
         <writing-bar
+          @send="
+            async (input) => {
+              if (input.value) {
+                const result = await PostComment(blog.blog_id, input.value, selected.valueOf())
+                if (result.success) {
+                  input.value = ''
+                  // Then refresh comments
+                  LoadComments()
+                  // If it works refresh
+                } else {
+                  triggerError('Couldn\'t send comment.')
+                }
+              }
+            }
+          "
           placeholder="Comment something..."
           :gradient-color1="author.gradientColor1"
           :gradient-color2="author.gradientColor2"
