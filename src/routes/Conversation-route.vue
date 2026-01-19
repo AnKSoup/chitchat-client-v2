@@ -24,10 +24,10 @@ import {
   IsUserOwner,
   LeaveConversation,
 } from '@/scripts/conversations'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import ConversationCreation from '@/components/conversation-creation.vue'
 import { useRoute } from 'vue-router'
-import { GetAllTheMessages, SendMessage } from '@/scripts/messages'
+import { ClearMessageInterval, GetAllTheMessages, SendMessage } from '@/scripts/messages'
 import SearchItem from '@/components/search-item.vue'
 import ConversationEdition from '@/components/conversation-edition.vue'
 import router from '@/router'
@@ -151,7 +151,12 @@ async function LoadMembers() {
 
 async function LoadMessages() {
   messageArray.value = [{ messages: [{ text: 'loading...' }] }]
-  await GetAllTheMessages(conversation.conversation_id, 20, messageArray.value)
+  await GetAllTheMessages(
+    conversation.conversation_id,
+    20,
+    messageArray.value,
+    CheckUpdateArray.value,
+  )
 }
 
 function fullReload() {
@@ -170,6 +175,20 @@ onMounted(async () => {
     LoadMembers()
     LoadMessages()
   }
+})
+
+//Check to update messages
+const CheckUpdateArray = ref([])
+
+watch(CheckUpdateArray.value, () => {
+  console.log('changed')
+
+  CheckUpdateArray.value = []
+  LoadMessages()
+})
+
+onUnmounted(() => {
+  ClearMessageInterval()
 })
 </script>
 
@@ -249,8 +268,7 @@ onMounted(async () => {
                   // If it works refresh
                   input.value = ''
                   // Then refresh messages at the bottom here
-                  LoadMessages() //This is very bad but this will do for now
-                  //Need a way to tell when another user sends a message + caching messages + appending message at the end
+                  //Need a way to cache messages + appending message at the end
                 } else {
                   triggerError(result.detail)
                 }

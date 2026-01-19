@@ -3,6 +3,7 @@ import { decryptKey, decryptMessage, encryptMessage, retrieveKeyAndIV } from './
 import { GetCurrentUser, GetUserPvK } from './users'
 
 const MessageRoute = '/message'
+let stopMessage = false //Remove this if you want memory leaks...
 
 //Get messages as a raw array of object
 async function GetMessages(conversation_id: string, message_count: number, message_offset: number) {
@@ -26,6 +27,7 @@ async function ConcatMessages(
   message_offset: number,
   array: Array<object>,
   first: boolean,
+  checkArray: Array<boolean>,
 ) {
   const newMessages = await GetMessages(conversation_id, message_count, message_offset)
   //Will return false when newMessages is undefined => to check for loop breaking
@@ -37,6 +39,16 @@ async function ConcatMessages(
 
   if (newMessages) {
     for (let i = 0; i < newMessages.length; i++) {
+      if (first && i == 0) {
+        //If both first iteration of the loop => start the watcher!!
+        NewMessagesCheck(conversation_id, newMessages[i].message_id, checkArray)
+      }
+
+      if (stopMessage) {
+        stopMessage = false
+        return false
+      }
+
       const formatted_message = await FormatMessage(newMessages[i], conversation_id, array)
       if (typeof formatted_message) {
         array.unshift(formatted_message as object)
@@ -55,12 +67,21 @@ export async function GetAllTheMessages(
   conversation_id: string,
   amount: number,
   array: Array<object>,
+  checkArray: Array<boolean>,
 ) {
+  // stopMessage = false
   let first = true
   let message_offset = 0
   //Loops until there is no more messages
   while (true) {
-    const check = await ConcatMessages(conversation_id, amount, message_offset, array, first)
+    const check = await ConcatMessages(
+      conversation_id,
+      amount,
+      message_offset,
+      array,
+      first,
+      checkArray,
+    )
     if (!check) {
       return
     }
@@ -188,5 +209,33 @@ export async function FormatMessage(
     }
   } else {
     return null
+  }
+}
+
+//Gets last message and checks if needs to reload them
+let messageChecker: ReturnType<typeof setInterval> | undefined
+
+async function NewMessagesCheck(
+  conversation_id: string,
+  last_message_id: number,
+  array: Array<boolean>,
+) {
+  ClearMessageInterval()
+  console.log('Watching for new messages:')
+  messageChecker = setInterval(async () => {
+    const result = await GetMessages(conversation_id, 1, 0)
+    if (result && result[0].message_id != last_message_id) {
+      stopMessage = true
+      ClearMessageInterval()
+      array.push(true) // This is only to pass something by reference to communicate with the component, ive been on this for 4hours this better work
+    }
+  }, 2000)
+}
+
+export function ClearMessageInterval() {
+  if (messageChecker) {
+    clearInterval(messageChecker)
+    messageChecker = undefined
+    console.log('Stopped watching for new messages')
   }
 }
