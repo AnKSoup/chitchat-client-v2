@@ -54,9 +54,11 @@ async function ConcatMessages(
         array.unshift(formatted_message as object)
       }
     }
+
     return true
   } else if (array.length == 0) {
-    //If its the first time
+    //If none found
+    NewMessagesCheck(conversation_id, 0, checkArray)
     array.push({ messages: [{ text: 'No message found!' }], gradientColor1: 'red' })
   } else {
     return false
@@ -69,7 +71,7 @@ export async function GetAllTheMessages(
   array: Array<object>,
   checkArray: Array<boolean>,
 ) {
-  // stopMessage = false
+  stopMessage = false
   let first = true
   let message_offset = 0
   //Loops until there is no more messages

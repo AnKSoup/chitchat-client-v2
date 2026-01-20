@@ -16,7 +16,10 @@
 
 html {
   height: 100vh;
-  background-color: rgb(156, 156, 156);
+  background-size: cover;
+  background-image: url('@/assets/images/background.jpg');
+  /* for transparency */
+  box-shadow: inset 100vh 100vw rgba(255, 255, 255, 0.5);
 }
 
 body,

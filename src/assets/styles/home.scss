@@ -1,0 +1,44 @@
+@use 'variables';
+
+.home {
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$desktop-spacing-huge;
+  padding: variables.$desktop-spacing-huge;
+  margin: variables.$desktop-spacing-huge;
+
+  box-shadow: variables.$inner-box-shadow;
+
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: variables.$desktop-radius;
+}
+
+.button-container {
+  display: flex;
+  gap: variables.$desktop-spacing-huge;
+  padding: variables.$desktop-spacing-huge;
+  button {
+    flex: 1;
+  }
+}
+
+h1 {
+  font-family: 'MPLUSRounded1c';
+  font-weight: 900;
+  font-size: variables.$desktop-font-huge;
+  margin: 0;
+}
+
+p {
+  font-family: 'AlbertSans';
+  font-size: variables.$desktop-font-big;
+  margin: 0;
+}

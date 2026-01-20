@@ -1,6 +1,3 @@
-// #2- comms from blog:  POST    /comment/of/:blog_id                        REQ: {limit, offset}                                                RES: {comments}
-// #3- Write a comment:  POST    /comment/:blog_id                           REQ: {user_id, user_token, comment_content, in_response_to}         //
-
 import { call } from './api-calls'
 import { GetCurrentUser } from './users'
 

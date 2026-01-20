@@ -24,7 +24,7 @@ import {
   IsUserOwner,
   LeaveConversation,
 } from '@/scripts/conversations'
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import ConversationCreation from '@/components/conversation-creation.vue'
 import { useRoute } from 'vue-router'
 import { ClearMessageInterval, GetAllTheMessages, SendMessage } from '@/scripts/messages'
@@ -69,7 +69,7 @@ function PopulateOwnerArray(isOwner: boolean) {
         },
       },
     },
-    remUserIcon,
+    // remUserIcon, Not implemented yet
   ]
   if (isOwner) {
     ownerIconArray.value = ownerIcons
@@ -151,12 +151,7 @@ async function LoadMembers() {
 
 async function LoadMessages() {
   messageArray.value = [{ messages: [{ text: 'loading...' }] }]
-  await GetAllTheMessages(
-    conversation.conversation_id,
-    20,
-    messageArray.value,
-    CheckUpdateArray.value,
-  )
+  GetAllTheMessages(conversation.conversation_id, 20, messageArray.value, CheckUpdateArray.value)
 }
 
 function fullReload() {
@@ -180,10 +175,10 @@ onMounted(async () => {
 //Check to update messages
 const CheckUpdateArray = ref([])
 
-watch(CheckUpdateArray.value, () => {
+watch(CheckUpdateArray.value, async () => {
   console.log('changed')
 
-  CheckUpdateArray.value = []
+  // CheckUpdateArray.value = []
   LoadMessages()
 })
 
@@ -258,7 +253,7 @@ onUnmounted(() => {
         />
       </div>
       <div class="conversation" v-if="conversation.conversation_id">
-        <MessageList :messageList="messageArray" />
+        <MessageList :messageList="messageArray" ref="messageList" />
         <writing-bar
           @send="
             async (input) => {

@@ -1,21 +1,25 @@
 <script setup lang="ts">
+import router from '@/router'
 import { IsLoggedIn } from '@/scripts/users'
 //Checks if the user is logged in already
 IsLoggedIn()
 </script>
 
 <template>
-  <h1>THIS IS THE UNFINISHED HOME PAGE</h1>
-  <h2>WELCOME TO CHIT CHAT</h2>
-  <!-- Should check if user already connected with current user and if token valid -->
-  <div>
-    <RouterLink to="Signin">Go to Signin</RouterLink>
-  </div>
-  <div>
-    <RouterLink to="Login">Go to Login</RouterLink>
-  </div>
+  <div class="home">
+    <div class="text-container">
+      <h1>WELCOME TO CHIT CHAT</h1>
+      <p>CHAT and BLOG securely with people all around the globe.</p>
+    </div>
 
-  <div>test components</div>
+    <div class="button-container">
+      <button @click="router.push('/Signin')">Join the nostalgia trip!</button>
+      <button @click="router.push('/Login')">Start Chatting</button>
+    </div>
+  </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use '@/assets/styles/home.scss';
+@use '@/assets/styles/button.scss';
+</style>

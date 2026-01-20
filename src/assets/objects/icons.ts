@@ -8,7 +8,7 @@ import { GetCurrentUser, LogOutUser } from '@/scripts/users'
 export const homeIcon = {
   iconImg: 'blog',
   iconText: 'Home',
-  gradientColor1: '',
+  gradientColor1: 'blue',
   gradientColor2: '',
   action: () => {
     router.push('/')
@@ -16,9 +16,9 @@ export const homeIcon = {
 }
 
 export const profileIcon = {
-  iconImg: 'user',
+  iconImg: ' ',
   iconText: 'Profile',
-  gradientColor1: '',
+  gradientColor1: 'blue',
   gradientColor2: '',
   action: () => {
     router.push('/Profile')
@@ -28,7 +28,7 @@ export const profileIcon = {
 export const chatIcon = {
   iconImg: 'chat',
   iconText: 'Chat',
-  gradientColor1: '',
+  gradientColor1: 'blue',
   gradientColor2: '',
   action: () => {
     router.push('/Conversations')
@@ -38,7 +38,7 @@ export const chatIcon = {
 export const blogIcon = {
   iconImg: 'blog',
   iconText: 'Blog',
-  gradientColor1: '',
+  gradientColor1: 'blue',
   gradientColor2: '',
   action: () => {
     const current_user = GetCurrentUser()
@@ -49,7 +49,7 @@ export const blogIcon = {
 export const loginIcon = {
   iconImg: 'log_in',
   iconText: 'Log In',
-  gradientColor1: '',
+  gradientColor1: 'blue',
   gradientColor2: '',
   action: () => {
     router.push('/Login')
@@ -59,7 +59,7 @@ export const loginIcon = {
 export const logoutIcon = {
   iconImg: 'log_out',
   iconText: 'Log Out',
-  gradientColor1: '',
+  gradientColor1: 'red',
   gradientColor2: '',
   action: () => {
     const current_user = GetCurrentUser()
@@ -70,7 +70,7 @@ export const logoutIcon = {
 export const signinIcon = {
   iconImg: 'sign_in',
   iconText: 'Sign In',
-  gradientColor1: '',
+  gradientColor1: 'green',
   gradientColor2: '',
   action: () => {
     router.push('/Signin')
@@ -80,7 +80,7 @@ export const signinIcon = {
 export const createConvIcon = {
   iconImg: 'create_conversation',
   iconText: 'New Conv.',
-  gradientColor1: '',
+  gradientColor1: 'green',
   gradientColor2: '',
 }
 
@@ -89,48 +89,48 @@ export const createConvIcon = {
 export const addUserIcon = {
   iconImg: 'add_user',
   iconText: 'Add User',
-  gradientColor1: '',
+  gradientColor1: 'green',
   gradientColor2: '',
 }
 
 export const remUserIcon = {
   iconImg: 'remove_user',
   iconText: 'Rem. User',
-  gradientColor1: '',
+  gradientColor1: 'red',
   gradientColor2: '',
 }
 
 export const leaveConvIcon = {
   iconImg: 'remove_user',
   iconText: 'Leave',
-  gradientColor1: '',
+  gradientColor1: 'red',
   gradientColor2: '',
 }
 
 export const convSettingsIcon = {
   iconImg: 'settings',
   iconText: 'Edit Conv.',
-  gradientColor1: '',
+  gradientColor1: 'grey',
   gradientColor2: '',
 }
 
 export const blogSettingsIcon = {
   iconImg: 'settings',
   iconText: 'Edit Blog',
-  gradientColor1: '',
+  gradientColor1: 'grey',
   gradientColor2: '',
 }
 
 export const respondIcon = {
   iconImg: 'respond',
   iconText: 'Respond',
-  gradientColor1: '',
+  gradientColor1: 'blue',
   gradientColor2: '',
 }
 
 export const searchIcon = {
   iconImg: 'search',
   iconText: 'Search',
-  gradientColor1: '',
+  gradientColor1: 'yellow',
   gradientColor2: '',
 }

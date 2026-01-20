@@ -3,6 +3,8 @@
 const defaults = {
   blue: { color1: '#4570ff', color2: '#35c2ff' },
   red: { color1: '#ff4545ff', color2: '#ff8b68ff' },
+  yellow: { color1: '#be720eff', color2: '#ecc958ff' },
+  green: { color1: '#62915dff', color2: '#79b663ff' },
   grey: { color1: '#6b6b6bff', color2: '#c0c0c0ff' },
 }
 
@@ -15,5 +17,5 @@ export function generateGradient(color1?: string, color2?: string) {
   } else if (color1 && color2) {
     // If both ok
     return { color1: color1, color2: color2 }
-  } else return defaults.grey
+  } else return defaults.blue
 }
