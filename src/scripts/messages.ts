@@ -9,6 +9,7 @@ let stopMessage = false //Remove this if you want memory leaks...
 async function GetMessages(conversation_id: string, message_count: number, message_offset: number) {
   // #1- Get all messages: POST /message/get/:conversation_id REQ: {user_token, user_id, message_count, message_offset}
   const current_user = GetCurrentUser()
+
   const result = await call('POST', MessageRoute + '/get/' + conversation_id, {
     user_token: current_user.user_token,
     user_id: current_user.user_id,

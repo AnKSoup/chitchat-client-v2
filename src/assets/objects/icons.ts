@@ -6,7 +6,7 @@ import router from '@/router'
 import { GetCurrentUser, LogOutUser } from '@/scripts/users'
 
 export const homeIcon = {
-  iconImg: 'blog',
+  iconImg: 'user',
   iconText: 'Home',
   gradientColor1: 'blue',
   gradientColor2: '',
@@ -16,7 +16,7 @@ export const homeIcon = {
 }
 
 export const profileIcon = {
-  iconImg: ' ',
+  iconImg: 'user',
   iconText: 'Profile',
   gradientColor1: 'blue',
   gradientColor2: '',

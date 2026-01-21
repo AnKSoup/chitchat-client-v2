@@ -25,9 +25,7 @@
   display: flex;
   gap: variables.$desktop-spacing-huge;
   padding: variables.$desktop-spacing-huge;
-  button {
-    flex: 1;
-  }
+  align-self: center;
 }
 
 h1 {

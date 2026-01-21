@@ -9,7 +9,6 @@ import {
   loginIcon,
   logoutIcon,
   profileIcon,
-  remUserIcon,
   searchIcon,
 } from '@/assets/objects/icons'
 import iconList from '@/components/icon-list.vue'
@@ -24,7 +23,7 @@ import {
   IsUserOwner,
   LeaveConversation,
 } from '@/scripts/conversations'
-import { onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import ConversationCreation from '@/components/conversation-creation.vue'
 import { useRoute } from 'vue-router'
 import { ClearMessageInterval, GetAllTheMessages, SendMessage } from '@/scripts/messages'
@@ -176,8 +175,6 @@ onMounted(async () => {
 const CheckUpdateArray = ref([])
 
 watch(CheckUpdateArray.value, async () => {
-  console.log('changed')
-
   // CheckUpdateArray.value = []
   LoadMessages()
 })
