@@ -1,6 +1,5 @@
 // Hosts functions to call the api
 const baseUrl = import.meta.env.VITE_SERVER_ADDRESS
-console.log(baseUrl)
 
 //Calls the api and returns the iro as a JSON
 export async function call(method: string, url: string, body?: object) {
