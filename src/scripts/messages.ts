@@ -113,8 +113,8 @@ export async function SendMessage(
   //Encrypting the message
   const message = encryptMessage(
     message_content,
-    decrypted_key_iv.key,
-    decrypted_key_iv.iv,
+    decrypted_key_iv.key as string,
+    decrypted_key_iv.iv as string,
   ) as object
 
   if ('message' in message && 'tag' in message) {
@@ -156,7 +156,9 @@ export async function FormatMessage(
     'message_content' in message &&
     'message_tag' in message &&
     'message_sent_at' in message &&
-    'user_id' in message
+    'user_id' in message &&
+    decrypted_key_iv.key &&
+    decrypted_key_iv.iv
   ) {
     const decrypted_message = decryptMessage(
       message.message_content as string,

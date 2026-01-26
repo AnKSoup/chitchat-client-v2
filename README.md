@@ -1,37 +1,15 @@
 # chitchat-client
 
-This template should help get you started developing with Vue 3 in Vite.
+This project is the client for the chitchat-backend.
 
 ## Recommended IDE Setup
 
 [VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+## Setting up the project :
 
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
 ```
 
@@ -41,8 +19,100 @@ npm run dev
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+# ARCHITECTURE :
+
+- **assets**: Contains various assets.
+  - **fonts**: Contains the fonts.
+  - **images**: Contains images (icons and background)
+  - **objects**: Serves as a base to generate objects (only icons so far, => todo : put ctors there too)
+  - **styles**: SCSS files.
+
+- **components**: Contains the components of the project.
+
+- **router**: Contains the router scripts.
+
+- **routes**: Contains the main routes for the router.
+
+- **scripts**: Contains the scripts.
+  - api-calls.ts : handles calling the api and retrieving the response as JSON.
+  - blog.ts : Script for getting/sending/formatting blogs.
+  - comment.ts : Script for getting/sending/formatting comments.
+  - conversation.ts : Script for getting/sending/formatting conversations.
+  - encryption.ts : Handles the encryption/decryption of keys and messages.
+  - gradients.ts : Generates and holds default gradients.
+  - local-storage.ts : Handles local-storage operations.
+  - messages.ts : Script for getting/sending/formatting messages.
+  - text-operation.ts : Formatting of texts.
+  - user.ts : Handles all user operations.
+
+# TESTING :
 
 ```sh
-npm run lint
+npx cypress open
 ```
+
+For now only a basic e2e interaction between two users is simulated. (Testing conversations, and blogs)
+
+# TODO :
+
+What is left to refactor, implement and change:
+
+- Features to add :
+  - 1.  USERS :
+    - Deletable accounts.
+    - Editable profile pictures
+    - Editable user gradients
+
+  - 2.  CONVERSATIONS :
+    - Removable members by the owner
+    - Editable gradients
+    - Editable background
+
+  - 3.  MESSAGES :
+    - Editable messages
+    - Removable messages
+    - replying to messages
+
+  - 4.  BLOGS :
+
+  - 5.  COMMENTS :
+    - Editable comments
+    - Removable comments
+
+  - 6.  UI :
+    - Editable background
+
+- Changes to implement :
+  - Socket.IO for notifications and appending new messages.
+  - Appending messages to conversation instead of reloading messages.
+  - Pinia to store messages and conversations for the session.
+
+  - Refactor architecture as follow :
+
+```
+- app : for main.ts, App.vue
+  - router : for the router
+  - routes : main routes
+
+- assets : static assets
+  - font
+  - images
+  - styles
+
+- shared :
+  - components : reusable components
+  - utils : move text-operation/gradients/encryption/local-storage/api-call/json-utils there
+  - models : for ctors and types
+
+- services : one for each endpoints => stores the logic
+  - users-service
+  - conversations-service
+  - group-member-service
+  - messages-service
+  - blogs-service
+  - comments-service
+```
+
+- Adding additional testing
+
+- Refactor scss files => too much duplicates :(

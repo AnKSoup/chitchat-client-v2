@@ -59,7 +59,8 @@ export async function SignInUser(form: object) {
 
   //If it succeeds => logs the user in
   //Else return the error to the user
-  if (result.success) {
+  if (result.success && 'user_name' in form) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { user_name, ...newObject } = form //Ugly but needed
 
     // attempts to log in the newly signed user
@@ -187,9 +188,9 @@ export async function SearchForUser(query: string) {
     content.sort((a: { user_name: string }, b: { user_name: string }) =>
       a.user_name.localeCompare(b.user_name),
     )
-    return { content: content }
+    return { success: true, content: content }
   } else {
-    return { error: result.detail }
+    return { success: false, error: result.detail }
   }
 }
 

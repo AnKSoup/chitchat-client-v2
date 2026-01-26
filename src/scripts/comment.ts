@@ -10,14 +10,17 @@ async function GetComments(blog_id: string) {
 }
 
 //Get all the responses recursively
-function RetrieveAllResponses(comments: Array<object>, comment_id: string) {
+function RetrieveAllResponses(
+  comments: Array<{ in_response_to: string; comment_id: string }>,
+  comment_id: string,
+) {
   const responses = comments.filter((comment) => comment.in_response_to == comment_id)
 
   //initialize my result
   const result = responses
 
   //Recursively call every children and push the deconstructed result into the parent result
-  responses.forEach((child) => {
+  responses.forEach((child: { comment_id: string }) => {
     result.push(...RetrieveAllResponses(comments, child.comment_id))
   })
 
@@ -25,61 +28,83 @@ function RetrieveAllResponses(comments: Array<object>, comment_id: string) {
 }
 
 //Get content and preview from an in response to
-function GetPreview(comments: Array<object>, in_response_to: string) {
+function GetPreview(comments: Array<{ comment_id: string }>, in_response_to: string) {
   return comments.find((comment) => comment.comment_id == in_response_to)
 }
 
 //Formats the retrieved comments
 export async function FormatComments(blog_id: string) {
-  const result = (await GetComments(blog_id)) as Array<object>
+  const result = await GetComments(blog_id)
 
   const formatted_comments = []
   if (result) {
     for (let i = 0; i < result.length; i++) {
-      if (result[i].in_response_to) {
-        continue // Skip responses
-      }
-      // Get possible responses
-      const responses = RetrieveAllResponses(result, result[i].comment_id)
+      const current_comment = result[i]
+      if (
+        current_comment &&
+        'comment_id' in current_comment &&
+        'user_name' in current_comment &&
+        'comment_created_at' in current_comment &&
+        'comment_content' in current_comment &&
+        'in_response_to' in current_comment
+      ) {
+        if (current_comment.in_response_to) {
+          continue // Skip responses
+        }
+        // Get possible responses
+        const responses = RetrieveAllResponses(result, current_comment.comment_id as string)
 
-      //Formats the comment
-      const comment = [
-        {
-          image: '',
-          username: result[i].user_name,
-          usernameResponse: '',
-          responsePreview: '',
-          date: result[i].comment_created_at,
-          content: result[i].comment_content,
-          id: result[i].comment_id,
-          gradientColor1: '',
-          gradientColor2: '',
-          gradientColor3: '',
-          gradientColor4: '',
-        },
-      ]
-      //Inserts responses
-      if (responses) {
-        for (let j = 0; j < responses.length; j++) {
-          const preview = GetPreview(result, responses[j].in_response_to)
-
-          comment.push({
+        //Formats the comment
+        const comment = [
+          {
             image: '',
-            username: responses[j].user_name,
-            usernameResponse: preview.user_name,
-            responsePreview: preview.comment_content,
-            date: responses[j].comment_created_at,
-            content: responses[j].comment_content,
-            id: responses[j].comment_id,
+            username: current_comment.user_name as string,
+            usernameResponse: '',
+            responsePreview: '',
+            date: current_comment.comment_created_at as string,
+            content: current_comment.comment_content as string,
+            id: current_comment.comment_id as string,
             gradientColor1: '',
             gradientColor2: '',
             gradientColor3: '',
             gradientColor4: '',
-          })
+          },
+        ]
+        //Inserts responses
+        if (responses) {
+          for (let j = 0; j < responses.length; j++) {
+            const current_response = responses[j]
+
+            if (
+              current_response &&
+              'comment_id' in current_response &&
+              'user_name' in current_response &&
+              'comment_created_at' in current_response &&
+              'comment_content' in current_response &&
+              'in_response_to' in current_response
+            ) {
+              const preview = GetPreview(result, current_response.in_response_to as string)
+
+              if (preview && 'user_name' in preview && 'comment_content' in preview)
+                comment.push({
+                  image: '',
+                  username: current_response.user_name as string,
+                  usernameResponse: preview.user_name as string,
+                  responsePreview: preview.comment_content as string,
+                  date: current_response.comment_created_at as string,
+                  content: current_response.comment_content as string,
+                  id: current_response.comment_id as string,
+                  gradientColor1: '',
+                  gradientColor2: '',
+                  gradientColor3: '',
+                  gradientColor4: '',
+                })
+            }
+          }
+          comment.sort((a: { date: string }, b: { date: string }) => a.date.localeCompare(b.date))
         }
-        comment.sort((a: { date: string }, b: { date: string }) => a.date.localeCompare(b.date))
+        formatted_comments.push(comment)
       }
-      formatted_comments.push(comment)
     }
     return formatted_comments
   } else {

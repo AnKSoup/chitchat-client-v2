@@ -161,8 +161,8 @@ export async function AddOtherMember(conversation_id: string, user_id: number) {
     current_user.user_token,
     user_id.toString(),
     conversation_id,
-    decrypted_key_iv.key,
-    decrypted_key_iv.iv,
+    decrypted_key_iv.key as string,
+    decrypted_key_iv.iv as string,
     user_public_key,
   )
   return result

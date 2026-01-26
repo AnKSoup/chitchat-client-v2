@@ -13,7 +13,12 @@ const form = reactive({
 const result = ref({ error: '', content: '' })
 
 async function submit() {
-  result.value = await SearchForUser(form.query)
+  const searchResult = await SearchForUser(form.query)
+  if (searchResult.success) {
+    result.value = searchResult.content
+  } else {
+    result.value = searchResult.error
+  }
 }
 </script>
 <template>
