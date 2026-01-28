@@ -112,6 +112,7 @@ function PopulateOwnerArray(isOwner: boolean) {
 }
 
 async function LoadComments() {
+  selected.value = '0'
   commentClusters.value = [
     [
       {
