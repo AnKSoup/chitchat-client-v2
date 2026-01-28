@@ -14,10 +14,11 @@ const result = ref({ error: '', content: '' })
 
 async function submit() {
   const searchResult = await SearchForUser(form.query)
+  console.log(searchResult.content)
   if (searchResult.success) {
-    result.value = searchResult.content
+    result.value.content = searchResult.content
   } else {
-    result.value = searchResult.error
+    result.value.error = searchResult.error
   }
 }
 </script>
