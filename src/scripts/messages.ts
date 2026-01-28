@@ -156,14 +156,12 @@ export async function FormatMessage(
     'message_content' in message &&
     'message_tag' in message &&
     'message_sent_at' in message &&
-    'user_id' in message &&
-    decrypted_key_iv.key &&
-    decrypted_key_iv.iv
+    'user_id' in message
   ) {
     const decrypted_message = decryptMessage(
       message.message_content as string,
-      decrypted_key_iv.key,
-      decrypted_key_iv.iv,
+      decrypted_key_iv.key as string,
+      decrypted_key_iv.iv as string,
       message.message_tag as string,
     ) as object
 

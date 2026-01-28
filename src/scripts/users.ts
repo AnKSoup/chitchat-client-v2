@@ -31,7 +31,7 @@ function CreateUser(user_id: number | undefined, user_token: string) {
   }
 }
 
-function UpdateUser(old: object, update: object) {
+export function UpdateUser(old: object, update: object) {
   return { ...old, ...update }
 }
 
