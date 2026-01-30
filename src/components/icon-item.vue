@@ -7,9 +7,12 @@ const icon = defineProps(['iconImg', 'iconText', 'gradientColor1', 'gradientColo
 
 const gradient = ref(generateGradient(icon.gradientColor1, icon.gradientColor2))
 
-const imagePath = '../assets/images/' + icon.iconImg + '.svg'
-// Needed when changing routes dynamically
-const imageUrl = new URL(imagePath, import.meta.url).href
+const imagePath = '/images/' + icon.iconImg + '.svg'
+// // Needed when changing routes dynamically
+// const imageUrl = new URL(imagePath, import.meta.url).href
+// console.log(imagePath)
+
+console.log(imagePath)
 
 function executeAction() {
   try {
@@ -26,7 +29,7 @@ function executeAction() {
 
 <template>
   <div class="icon-container" @click="executeAction()">
-    <img :src="imageUrl" :alt="iconImg" />
+    <img :src="imagePath" :alt="iconImg" />
     <div class="text-container">
       <p class="text">{{ iconText }}</p>
     </div>

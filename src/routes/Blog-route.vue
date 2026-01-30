@@ -8,7 +8,7 @@ import {
   profileIcon,
   // respondIcon,
   searchIcon,
-} from '@/assets/objects/icons'
+} from '@/objects/icons'
 import CommentList from '@/components/comment-list.vue'
 import iconList from '@/components/icon-list.vue'
 import profilePictureItem from '@/components/profile-picture-item.vue'

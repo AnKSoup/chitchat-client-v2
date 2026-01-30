@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import iconList from '@/components/icon-list.vue'
-import { homeIcon, loginIcon, signinIcon } from '@/assets/objects/icons'
+import { homeIcon, loginIcon, signinIcon } from '@/objects/icons'
 import { SignInUser } from '@/scripts/users'
 import { reactive, ref } from 'vue'
 

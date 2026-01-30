@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import icon from '@/components/icon-item.vue'
+import IconItem from './icon-item.vue'
 
 defineProps(['iconsArray'])
 </script>
@@ -8,7 +8,7 @@ defineProps(['iconsArray'])
   <div class="fruity-border">
     <div class="list-container">
       <div class="bundle" v-for="item in iconsArray" v-bind:key="item">
-        <icon
+        <icon-item
           v-for="icon in item"
           v-bind:key="icon"
           :icon-img="icon.iconImg"

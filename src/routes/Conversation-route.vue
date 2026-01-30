@@ -10,7 +10,7 @@ import {
   logoutIcon,
   profileIcon,
   searchIcon,
-} from '@/assets/objects/icons'
+} from '@/objects/icons'
 import iconList from '@/components/icon-list.vue'
 import memberList from '@/components/member-list.vue'
 import conversationList from '@/components/conversation-list.vue'

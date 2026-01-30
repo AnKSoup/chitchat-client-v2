@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { blogIcon, chatIcon, loginIcon, logoutIcon, profileIcon } from '@/assets/objects/icons'
+import { blogIcon, chatIcon, loginIcon, logoutIcon, profileIcon } from '@/objects/icons'
 import IconList from '@/components/icon-list.vue'
 import ProfilePictureItem from '@/components/profile-picture-item.vue'
 import { KeysCheckers } from '@/scripts/encryption'

@@ -19,6 +19,19 @@ npm run dev
 npm run build
 ```
 
+### Setting up docker :
+Make your .env file following the .env-example template
+
+Building the image :
+```sh
+  docker build -t chitchat-frontend .
+```
+
+Running the container : 
+```sh
+  docker run --name chitchat-frontend --env-file .env -p "(your APP_PORT)":"(your APP_PORT)" chitchat-frontend
+```
+
 # ARCHITECTURE :
 
 - **assets**: Contains various assets.
