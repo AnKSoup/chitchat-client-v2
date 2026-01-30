@@ -14,8 +14,10 @@ COPY . .
 # Installs dependencies
 RUN npm install
 
-# Builds the app
-RUN npm run build
+# Builds the app with secret server adress
+RUN --mount=type=secret,id=env \
+    sh -c "export VITE_SERVER_ADDRESS=$(grep '^VITE_SERVER_ADDRESS=' /run/secrets/env | sed -E 's/^VITE_SERVER_ADDRESS=(.*)$/\1/') &&\
+    npm run build"
 
 ###################################
 ### Stage 2: Runtime with nginx ###
