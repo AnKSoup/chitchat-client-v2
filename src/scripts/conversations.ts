@@ -132,7 +132,16 @@ async function AddMember(
     }
     const result = await call('POST', MemberRoute, member)
     if (!result.success) {
-      return result.detail
+      //Attempts to rejoin
+      const rejoin = await call('PUT', MemberRoute + '/rejoin/' + conversation_id, {
+        user_token: user_token,
+        user_id: user_id,
+        decrypt_key: key.key,
+        decrypt_iv: iv.key,
+      })
+      if (!rejoin.success) {
+        return rejoin.detail
+      }
     }
   } else if ('error' in key) {
     return key.error
